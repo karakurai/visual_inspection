@@ -59,6 +59,8 @@ class InspectionSettingScreen(MDScreen):
             from_dir = "./adfi_client_app_data/inspection_data"
             to_dir = "./adfi_client_app_data/current_inspection"
             file_path = from_dir + "/" + filename + ".pkl"
+            if not os.path.exists(to_dir):
+                os.makedirs(to_dir)
             if os.path.exists(file_path):
                 path_list = glob.glob(to_dir + "/*")
                 if len(path_list) > 0:
@@ -286,6 +288,8 @@ class InspectionSettingScreen(MDScreen):
         current_inspection_dir = "./adfi_client_app_data/current_inspection"
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
+        if not os.path.exists(current_inspection_dir):
+            os.makedirs(current_inspection_dir)
         inspection_count = len(glob.glob(save_dir + "/*.pkl"))
 
         inspection_dict = {
