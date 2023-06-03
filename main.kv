@@ -1,0 +1,73 @@
+<LoadingScreen>
+    md_bg_color: .95, .95, 1, 1
+    MDLabel:
+        size_hint: 1, 1
+        halign: "center"
+        text: "Checking camera connections now..."
+        color: 0, 0, 0, 1
+
+<StartScreen>
+    md_bg_color: .95, .95, 1, 1
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_adfi"]
+        Image:
+            source: 'adfi_client_app_data/logo/adfi.png'
+        MDLabel:
+            halign: "center"
+            size_hint: 1, .2
+            text: app.textini[app.lang]["label_choose"]
+            color: 0, 0, 0, 1
+        MDBoxLayout:
+            adaptive_size: True
+            pos_hint: {"center_x": .5}
+            MDFillRoundFlatButton:
+                id: en_button
+                font_size: "24sp"
+                text: ' English '
+                on_press:
+                    self.disabled = True
+                on_release:
+                    app.sm.transition.direction = "left"
+                    app.start_cs_screen("DEFAULT")
+            MDFillRoundFlatButton:
+                id: ja_button
+                font_size: "24sp"
+                text: ' 日本語 '
+                on_press:
+                    self.disabled = True
+                on_release:
+                    app.sm.transition.direction = "left"
+                    app.start_cs_screen("ja")
+        MDLabel:
+            halign: "center"
+            font_size: "24sp"
+            text: app.textini[app.lang]["label_visual"]
+            color: 0, 0, 0, 1
+    MDBottomAppBar:
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_copyright"]
+            icon: "close"
+            type: "bottom"
+            mode: "end"
+            on_action_button: app.popup_open()
+
+<QuitPopupMenu>
+    orientation: 'vertical'
+    MDLabel:
+        halign: "center"
+        font_size: "24sp"
+        text: app.textini[app.lang]["quit_app_text"]
+        color: 1, 1, 1, 1
+    MDBoxLayout:
+        adaptive_size: True
+        MDFillRoundFlatButton:
+            text: app.textini[app.lang]["ok"]
+            font_size: "24sp"
+            on_release: app.stop_app()
+        MDFillRoundFlatButton:
+            text: app.textini[app.lang]["cansel"]
+            font_size: "24sp"
+            on_release: app.popup_close()
+

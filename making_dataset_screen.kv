@@ -1,0 +1,121 @@
+<MakingDatasetScreen>:
+    md_bg_color: .2, .2, .2, 1
+    on_pre_enter: self.on_pre_enter()
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_adfi"]
+            md_bg_color: app.theme_cls.primary_dark
+        MDLabel:
+            id: message
+            halign: "center"
+            size_hint: 1, .1
+            color: 1, 1, 1, 1
+            text: app.textini[app.lang]["making_dataset"] + " :  " + app.textini[app.lang]["md_message"]
+            padding: "4dp", "4dp"
+        MDLabel:
+            id :space
+        MDRectangleFlatButton:
+            size_hint: .3, .1
+            pos_hint: {'center_x': .5}
+            text_color: "white"
+            font_size: "18sp"
+            text: app.textini[app.lang]["finish"]
+            on_release:
+                app.release_cameras()
+                dataset_image_view.stop_clock()
+                dataset_image_view.clear()
+                app.sm.transition.direction = "left"
+                app.sm.current = "main"
+            padding: "4dp", "4dp"
+        MDLabel:
+            id: bottom_space
+            halign: "center"
+            size_hint: 1, .15
+            color: 0, 0, 0, 0
+    MDBottomAppBar:
+        md_bg_color: app.theme_cls.primary_dark
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_copyright"]
+            icon: "close"
+            type: "bottom"
+            mode: "end"        
+            on_action_button: app.popup_open()
+    DatasetImageView:
+        id: dataset_image_view
+    MDFloatLayout:
+        MDRectangleFlatButton:
+            id: change_button
+            pos: 200, 150
+            text_color: "white"
+            font_size: "18sp"
+            text: app.textini[app.lang]["md_change"]
+            on_release: dataset_image_view.change_image()
+    MDFloatLayout:
+        MDBoxLayout:
+            pos: 900, 600
+            size_hint: .35, .1
+            orientation: 'vertical'
+            MDRectangleFlatButton:
+                id: normal_button
+                text_color: "white"
+                font_size: "18sp"
+                text: app.textini[app.lang]["md_normal"]
+                on_release: dataset_image_view.save_images(0)
+            MDLabel:
+                id: space
+                text: ""
+            MDRectangleFlatButton:
+                id: anomaly_button
+                text_color: "white"
+                font_size: "18sp"
+                text: app.textini[app.lang]["md_anomaly"]
+                on_release: dataset_image_view.save_images(1)
+    MDFloatLayout:
+        MDGridLayout:
+            pos: 900, 250
+            size_hint: .35, .35
+            rows: 6
+            cols: 2
+            MDLabel:
+                text: app.textini[app.lang]["md_inspection_name"]
+                font_size: "14sp"
+            MDLabel:
+                id: inspection_name
+                size_hint: 0.2, 0.1
+                font_size: "14sp"
+            MDLabel:
+                text: app.textini[app.lang]["md_preprocessing_name"]
+                font_size: "14sp"
+            MDLabel:
+                id: image_name
+                size_hint: 0.2, 0.1
+                font_size: "14sp"
+            MDLabel:
+                text: app.textini[app.lang]["md_label_normal"]
+                font_size: "14sp"
+            MDLabel:
+                id: normal_num
+                font_size: "14sp"
+            MDLabel:
+                text: app.textini[app.lang]["md_label_anomaly"]
+                font_size: "14sp"
+            MDLabel:
+                id: anomaly_num
+                font_size: "14sp"
+            MDLabel:
+                text: app.textini[app.lang]["md_label_save_dir"]
+                font_size: "14sp"
+            TextInput:
+                id: save_dir_path
+                font_size: "10sp"
+            MDLabel:
+                text_size: self.size
+                text: app.textini[app.lang]["md_label_adfi"]
+                font_size: "14sp"
+            MDRectangleFlatButton:
+                id: adfi_button
+                text_color: "white"
+                font_size: "14sp"
+                text: app.textini[app.lang]["md_adfi_button"]
+                on_release: root.open_ADFI()

@@ -1,0 +1,568 @@
+<InspectionSettingScreen>
+    md_bg_color: .2, .2, .2, 1
+    on_pre_enter: self.on_pre_enter()
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_adfi"]
+            md_bg_color: app.theme_cls.primary_dark
+        MDLabel:
+            id: message
+            halign: "center"
+            size_hint: 1, .1
+            color: 1, 1, 1, 1 
+            text: app.textini[app.lang]["inspection_settings"] + "  " + app.textini[app.lang]["is_top_message"]
+            padding: "4dp", "4dp"
+        MDLabel:
+            id :space
+        MDRectangleFlatButton:
+            size_hint: .3, .1
+            pos_hint: {'center_x': .5}
+            text_color: "white"
+            font_size: "18sp"
+            text: app.textini[app.lang]["finish"]
+            on_release:
+                app.sm.transition.direction = "left"
+                app.sm.current = "main"
+            padding: "4dp", "4dp"
+        MDLabel:
+            id: bottom_space
+            halign: "center"
+            size_hint: 1, .15
+            color: 0, 0, 0, 0
+    MDBottomAppBar:
+        md_bg_color: app.theme_cls.primary_dark
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_copyright"]
+            icon: "close"
+            type: "bottom"
+            mode: "end"        
+            on_action_button: app.popup_open()
+    MDFloatLayout:
+        MDGridLayout:
+            id: inspection_list_layout
+            adaptive_height: True
+            adaptive_width: True
+            size_hint: 1, .5
+            pos: 0, 300
+            rows: 11
+            cols: 4
+            MDLabel:
+                text: ""
+                size_hint_x: None
+                width: 50
+            MDLabel:
+                text: app.textini[app.lang]["inspection_name"]
+                size_hint_x: None
+                width: 500
+            MDLabel:
+                text: app.textini[app.lang]["preprocessing_num"]
+                size_hint_x: None
+                width: 200
+            MDLabel:
+                text: app.textini[app.lang]["create_time"]
+                size_hint_x: None
+                width: 250
+            CheckBox:
+                id: checkbox_0
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_0
+            MDLabel:
+                id: preprocessing_num_0
+            MDLabel:
+                id: creat_time_0
+            CheckBox:
+                id: checkbox_1
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_1
+            MDLabel:
+                id: preprocessing_num_1
+            MDLabel:
+                id: creat_time_1
+            CheckBox:
+                id: checkbox_2
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_2
+            MDLabel:
+                id: preprocessing_num_2
+            MDLabel:
+                id: creat_time_2
+            CheckBox:
+                id: checkbox_3
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_3
+            MDLabel:
+                id: preprocessing_num_3
+            MDLabel:
+                id: creat_time_3
+            CheckBox:
+                id: checkbox_4
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_4
+            MDLabel:
+                id: preprocessing_num_4
+            MDLabel:
+                id: creat_time_4
+            CheckBox:
+                id: checkbox_5
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_5
+            MDLabel:
+                id: preprocessing_num_5
+            MDLabel:
+                id: creat_time_5
+            CheckBox:
+                id: checkbox_6
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_6
+            MDLabel:
+                id: preprocessing_num_6
+            MDLabel:
+                id: creat_time_6
+            CheckBox:
+                id: checkbox_7
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_7
+            MDLabel:
+                id: preprocessing_num_7
+            MDLabel:
+                id: creat_time_7
+            CheckBox:
+                id: checkbox_8
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_8
+            MDLabel:
+                id: preprocessing_num_8
+            MDLabel:
+                id: creat_time_8
+            CheckBox:
+                id: checkbox_9
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_9
+            MDLabel:
+                id: preprocessing_num_9
+            MDLabel:
+                id: creat_time_9
+        MDGridLayout:
+            size_hint: .8, .1
+            pos: 200, 200
+            rows: 1
+            cols: 5
+            MDBoxLayout:
+                MDRaisedButton:
+                    id: create_button
+                    text: app.textini[app.lang]["create"]
+                    on_release: root.show_save_settings_popup()
+                MDLabel:
+                    text: ""
+                MDRaisedButton:
+                    id : details_button
+                    text: app.textini[app.lang]["details"]
+                    on_release: root.show_details_popup(root.get_filename(), root.get_name())
+                    disabled: False
+            MDLabel:
+                text: ""
+            MDBoxLayout:
+                MDRaisedButton:
+                    id : run_button
+                    text: app.textini[app.lang]["is_run_inspection"]
+                    on_release: root.run_inspection(root.get_filename())
+                    disabled: False
+                MDLabel:
+                    text: ""
+                MDRaisedButton:
+                    id : stop_button
+                    text: app.textini[app.lang]["is_stop_inspection"]
+                    on_release: root.stop_inspection()
+                    disabled: False
+            MDLabel:
+                text: ""
+            MDRaisedButton:
+                id: delete_button
+                text: app.textini[app.lang]["delete"]
+                on_release: root.show_delete_inspection_dialog(root.get_filename(), root.get_name())
+                disabled: False
+
+<PreprocessingListContent>
+    id: preprocessing_list_content
+    orientation: "vertical"
+    MDLabel:
+        size_hint: 1, .2
+        halign: "center"
+        adaptive_height: True
+        text: app.textini[app.lang]["is_popup_preprocessing_message"]
+    MDGridLayout:
+        id: preprocessing_list_layout
+        adaptive_height: True
+        adaptive_width: True
+        size_hint: 1, .6
+        rows: 12
+        cols: 4
+        MDLabel:
+            text: ""
+            size_hint_x: None
+            width: 50
+        MDLabel:
+            id: new_inspection_name
+            text: ""
+            size_hint_x: None
+            width: 400
+        MDLabel:
+            text: ""
+            size_hint_x: None
+            width: 100
+        MDLabel:
+            text: ""
+            size_hint_x: None
+            width: 250
+        MDLabel:
+            text: ""
+            size_hint_x: None
+            width: 50
+        MDLabel:
+            text: app.textini[app.lang]["name"]
+            size_hint_x: None
+        MDLabel:
+            text: app.textini[app.lang]["camera"]
+            size_hint_x: None
+        MDLabel:
+            text: app.textini[app.lang]["create_time"]
+            size_hint_x: None
+        CheckBox:
+            id: checkbox_0
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_0
+        MDLabel:
+            id: camera_num_0
+        MDLabel:
+            id: creat_time_0
+        CheckBox:
+            id: checkbox_1
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_1
+        MDLabel:
+            id: camera_num_1
+        MDLabel:
+            id: creat_time_1
+        CheckBox:
+            id: checkbox_2
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_2
+        MDLabel:
+            id: camera_num_2
+        MDLabel:
+            id: creat_time_2
+        CheckBox:
+            id: checkbox_3
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_3
+        MDLabel:
+            id: camera_num_3
+        MDLabel:
+            id: creat_time_3
+        CheckBox:
+            id: checkbox_4
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_4
+        MDLabel:
+            id: camera_num_4
+        MDLabel:
+            id: creat_time_4
+        CheckBox:
+            id: checkbox_5
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_5
+        MDLabel:
+            id: camera_num_5
+        MDLabel:
+            id: creat_time_5
+        CheckBox:
+            id: checkbox_6
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_6
+        MDLabel:
+            id: camera_num_6
+        MDLabel:
+            id: creat_time_6
+        CheckBox:
+            id: checkbox_7
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_7
+        MDLabel:
+            id: camera_num_7
+        MDLabel:
+            id: creat_time_7
+        CheckBox:
+            id: checkbox_8
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_8
+        MDLabel:
+            id: camera_num_8
+        MDLabel:
+            id: creat_time_8
+        CheckBox:
+            id: checkbox_9
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_9
+        MDLabel:
+            id: camera_num_9
+        MDLabel:
+            id: creat_time_9
+    MDGridLayout:
+        size_hint: 1, .1
+        rows: 1
+        cols: 5
+        MDBoxLayout:
+            MDFlatButton:
+                text: app.textini[app.lang]["cansel"]
+                on_release: root.popup_close()
+            MDFlatButton:
+                text: app.textini[app.lang]["create"]
+                on_release: root.craete_new_inspection()
+        MDLabel:
+            text: ""
+        MDLabel:
+            text: ""
+        MDLabel:
+            text: ""
+        MDLabel:
+            text: ""
+
+<DetailsContent>
+    id: details_content
+    orientation: "vertical"
+    MDLabel:
+        size_hint: 1, .2
+        halign: "center"
+        adaptive_height: True
+        text: app.textini[app.lang]["is_popup_details_message"]
+    MDGridLayout:
+        id: preprocessing_list_layout
+        adaptive_height: True
+        adaptive_width: True
+        size_hint: 1, .6
+        rows: 12
+        cols: 4
+        MDLabel:
+            text: ""
+            size_hint_x: None
+            width: 50
+        MDLabel:
+            id: inspection_name
+            text: ""
+            size_hint_x: None
+            width: 400
+        MDLabel:
+            text: ""
+            size_hint_x: None
+            width: 100
+        MDLabel:
+            text: ""
+            size_hint_x: None
+            width: 250
+        MDLabel:
+            text: ""
+            size_hint_x: None
+            width: 50
+        MDLabel:
+            text: app.textini[app.lang]["name"]
+            size_hint_x: None
+        MDLabel:
+            text: app.textini[app.lang]["camera"]
+            size_hint_x: None
+        MDLabel:
+            text: app.textini[app.lang]["create_time"]
+            size_hint_x: None
+        CheckBox:
+            id: checkbox_0
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_0
+        MDLabel:
+            id: camera_num_0
+        MDLabel:
+            id: creat_time_0
+        CheckBox:
+            id: checkbox_1
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_1
+        MDLabel:
+            id: camera_num_1
+        MDLabel:
+            id: creat_time_1
+        CheckBox:
+            id: checkbox_2
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_2
+        MDLabel:
+            id: camera_num_2
+        MDLabel:
+            id: creat_time_2
+        CheckBox:
+            id: checkbox_3
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_3
+        MDLabel:
+            id: camera_num_3
+        MDLabel:
+            id: creat_time_3
+        CheckBox:
+            id: checkbox_4
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_4
+        MDLabel:
+            id: camera_num_4
+        MDLabel:
+            id: creat_time_4
+        CheckBox:
+            id: checkbox_5
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_5
+        MDLabel:
+            id: camera_num_5
+        MDLabel:
+            id: creat_time_5
+        CheckBox:
+            id: checkbox_6
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_6
+        MDLabel:
+            id: camera_num_6
+        MDLabel:
+            id: creat_time_6
+        CheckBox:
+            id: checkbox_7
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_7
+        MDLabel:
+            id: camera_num_7
+        MDLabel:
+            id: creat_time_7
+        CheckBox:
+            id: checkbox_8
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_8
+        MDLabel:
+            id: camera_num_8
+        MDLabel:
+            id: creat_time_8
+        CheckBox:
+            id: checkbox_9
+            halign: "center"
+            disabled: True
+        MDLabel:
+            id: name_9
+        MDLabel:
+            id: camera_num_9
+        MDLabel:
+            id: creat_time_9
+    MDGridLayout:
+        size_hint: 1, .1
+        rows: 1
+        cols: 5
+        MDBoxLayout:
+            MDFlatButton:
+                text: app.textini[app.lang]["ok"]
+                on_release: root.popup_close()
+        MDLabel:
+            text: ""
+        MDLabel:
+            text: ""
+        MDLabel:
+            text: ""
+        MDLabel:
+            text: ""
+
+
+<SaveInspectionContent>
+    id: save_inspection_content
+    orientation: "vertical"
+    MDLabel:
+        size_hint: 1, .3
+        halign: "center"
+        adaptive_height: True
+        text: app.textini[app.lang]["is_popup_save_inspection_message"]
+    MDTextField:
+        id: inspection_name
+        size_hint: 1, .4
+        required: True
+        hint_text: app.textini[app.lang]["is_popup_save_inspection_name"]
+        max_text_length: 30
+        input_type: "text"
+        color_mode: "custom"
+        text_color_focus: 1, 1, 1, 1
+    MDBoxLayout:
+        size_hint: 1, .3
+        MDFlatButton:
+            text: app.textini[app.lang]["cansel"]
+            on_release: root.popup_close()
+        MDFlatButton:
+            text: app.textini[app.lang]["ok"]
+            on_release: root.save_inspection(inspection_name.text)

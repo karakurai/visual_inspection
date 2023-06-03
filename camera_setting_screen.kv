@@ -1,0 +1,161 @@
+<CameraSettingScreen>:
+    md_bg_color: .2, .2, .2, 1
+    on_pre_enter: self.on_pre_enter()
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_adfi"]
+            md_bg_color: app.theme_cls.primary_dark
+        MDLabel:
+            id: message
+            halign: "center"
+            size_hint: 1, .1
+            color: 1, 1, 1, 1 
+            text: app.textini[app.lang]["camera_settings"] + "  " + app.textini[app.lang]["step"] + " 1/2 :  " + app.textini[app.lang]["cs_camera_choice"]
+            padding: "4dp", "4dp"
+        MDBoxLayout:
+            id: buttons
+            size_hint: 1, .1
+            MDRectangleFlatButton:
+                id: cb0
+                text_color: "white"
+                text: "Camera 0: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: camera_view.active_camera(0), parameter_table.display_parameter(0)
+            MDRectangleFlatButton:
+                id: cb1
+                text_color: "white"
+                text: "Camera 1: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: camera_view.active_camera(1), parameter_table.display_parameter(1)
+            MDRectangleFlatButton:
+                id: cb2
+                text_color: "white"
+                text: "Camera 2: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: camera_view.active_camera(2), parameter_table.display_parameter(2)
+            MDRectangleFlatButton:
+                id: cb3
+                text_color: "white"
+                text: "Camera 3: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: camera_view.active_camera(3), parameter_table.display_parameter(3)
+            MDRectangleFlatButton:
+                id: cb4
+                text_color: "white"
+                text: "Camera 4: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: camera_view.active_camera(4), parameter_table.display_parameter(4)
+        MDBoxLayout:
+            MDLabel:
+                size_hint: .7, 1
+                text: ""
+            ParameterTable:
+                id: parameter_table
+                adaptive_height: True
+                size_hint: .3, 1
+                cols: 2
+                rows: 12
+                MDLabel:
+                    id: camera_name
+                    font_size: "22sp"
+                    text: ""
+                MDLabel:
+                    text: ""
+                MDLabel:
+                    text: app.textini[app.lang]["param_width"]
+                MDLabel:
+                    id: param_width
+                    text: ""
+                MDLabel:
+                    text: app.textini[app.lang]["param_height"]
+                MDLabel:
+                    id: param_height
+                    text: ""
+                MDLabel:
+                    text: app.textini[app.lang]["param_auto_focus"]
+                MDLabel:
+                    id: param_auto_focus
+                    text: ""
+                MDLabel:
+                    text: app.textini[app.lang]["param_focus"]
+                MDLabel:
+                    id: param_focus
+                    text: ""
+                MDLabel:
+                    text: app.textini[app.lang]["param_auto_exposure"]
+                MDLabel:
+                    id: param_auto_exposure
+                    text: ""
+                MDLabel:
+                    text: app.textini[app.lang]["param_exposure"]
+                MDLabel:
+                    id: param_exposure
+                    text: ""
+                MDLabel:
+                    text: app.textini[app.lang]["param_gamma"]
+                MDLabel:
+                    id: param_gamma
+                    text: ""
+                MDLabel:
+                    text: app.textini[app.lang]["param_gain"]
+                MDLabel:
+                    id: param_gain
+                    text: ""
+                MDLabel:
+                    id: space
+                    text: ""
+                MDLabel:
+                    id: space
+                    text: ""
+                MDRectangleFlatButton:
+                    id: parameter_settings_button
+                    text_color: "white"
+                    font_size: "18sp"
+                    text: app.textini[app.lang]["cs_parameter_settings"]
+                    on_release: camera_view.camera_setting()
+                    disabled: True
+                MDRectangleFlatButton:
+                    id: save_settings_button
+                    text_color: "white"
+                    font_size: "18sp"
+                    text: app.textini[app.lang]["cs_save_settings"]
+                    on_release: camera_view.save_camera_parameter()
+                    disabled: True
+                MDRectangleFlatButton:
+                    id: delete_saved_settings_button
+                    text_color: "white"
+                    font_size: "18sp"
+                    text: app.textini[app.lang]["cs_delete_saved_settings"]
+                    on_release: camera_view.show_delete_settings_dialog()
+                    disabled: True
+                MDLabel:
+                    id: space
+                    text: ""
+        MDRectangleFlatButton:
+            pos_hint: {'center_x': .5}
+            size_hint: .3, .1
+            text_color: "white"
+            font_size: "18sp"
+            text: app.textini[app.lang]["next"]
+            on_release:
+                camera_view.clock_unschedule()
+                app.sm.transition.direction = "left"
+                app.sm.current = "target_area"
+            padding: "4dp", "4dp"
+        MDLabel:
+            id: bottom_space
+            halign: "center"
+            size_hint: 1, .15
+            color: 0, 0, 0, 0
+    MDBottomAppBar:
+        md_bg_color: app.theme_cls.primary_dark
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_copyright"]
+            icon: "close"
+            type: "bottom"
+            mode: "end"        
+            on_action_button: app.popup_open()
+    CameraView:
+        id: camera_view
+        pos: 200, 200

@@ -1,0 +1,526 @@
+<PreprocessingScreen>:
+    md_bg_color: .2, .2, .2, 1
+    on_pre_enter: self.on_pre_enter()
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_adfi"]
+            md_bg_color: app.theme_cls.primary_dark
+        MDLabel:
+            id: message
+            halign: "center"
+            size_hint: 1, .1
+            color: 1, 1, 1, 1 
+            text: app.textini[app.lang]["preprocessing_settings"] + " :  " + app.textini[app.lang]["pp_top_message"]
+            padding: "4dp", "4dp"
+        MDBoxLayout:
+            id: buttons
+            size_hint: 1, .1
+            MDRectangleFlatButton:
+                id: cb0
+                text_color: "white"
+                text: "Camera 0: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: image_view.active_camera(0)
+            MDRectangleFlatButton:
+                id: cb1
+                text_color: "white"
+                text: "Camera 1: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: image_view.active_camera(1)
+            MDRectangleFlatButton:
+                id: cb2
+                text_color: "white"
+                text: "Camera 2: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: image_view.active_camera(2)
+            MDRectangleFlatButton:
+                id: cb3
+                text_color: "white"
+                text: "Camera 3: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: image_view.active_camera(3)
+            MDRectangleFlatButton:
+                id: cb4
+                text_color: "white"
+                text: "Camera 4: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: image_view.active_camera(4)
+        MDLabel:
+            id :space
+        MDBoxLayout:
+            size_hint: 1, .1
+            MDLabel:
+                id: space
+                size_hint: .3, 1
+                text: ""
+            MDRectangleFlatButton:
+                size_hint: .3, 1
+                pos_hint: {'center_x': .5}
+                text_color: "white"
+                font_size: "18sp"
+                text: app.textini[app.lang]["previous"]
+                on_release:
+                    image_view.clock_unschedule()
+                    app.sm.transition.direction = "right"
+                    app.sm.current = "target_area"
+                padding: "4dp", "4dp"
+            MDLabel:
+                id: space
+                size_hint: .1, 1
+                text: ""
+            MDRectangleFlatButton:
+                size_hint: .3, 1
+                pos_hint: {'center_x': .5}
+                text_color: "white"
+                font_size: "18sp"
+                text: app.textini[app.lang]["finish"]
+                on_release:
+                    image_view.clock_unschedule()
+                    app.release_cameras()
+                    root.finish()
+                padding: "4dp", "4dp"
+            MDLabel:
+                id: space
+                size_hint: .3, 1
+                text: ""
+        MDLabel:
+            id: bottom_space
+            halign: "center"
+            size_hint: 1, .15
+            color: 0, 0, 0, 0
+    MDBottomAppBar:
+        md_bg_color: app.theme_cls.primary_dark
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_copyright"]
+            icon: "close"
+            type: "bottom"
+            mode: "end"        
+            on_action_button: app.popup_open()
+    PreprocessingImageView:
+        id: image_view
+    AppliedImageView:
+        id: applied_view
+    MDFloatLayout:
+        MDLabel:
+            id: camera_name
+            size_hint: 0.1, 0.1
+            pos: 1250, 710
+            font_size: "22sp"
+            text: ""
+    MDFloatLayout:
+        MDLabel:
+            id: raw_image
+            size_hint: 0.2, 0.1
+            pos: 200, 160
+            font_size: "14sp"
+            text: app.textini[app.lang]["raw_image"]
+    MDFloatLayout:
+        MDLabel:
+            id: image_after_preprocessing
+            size_hint: 0.2, 0.1
+            pos: 700, 160
+            font_size: "14sp"
+            text: app.textini[app.lang]["image_after_preprocessing"]
+    MDFloatLayout:
+        MDRectangleFlatButton:
+            pos: 50, 150
+            id: capture_button
+            text_color: "white"
+            font_size: "16sp"
+            text: app.textini[app.lang]["pp_capture"]
+            on_release: root.get_background_image()
+    MDFloatLayout:
+        MDGridLayout:
+            size_hint: 0.4, 0.05
+            pos: 1000, 150
+            rows: 1
+            cols: 2
+            MDRectangleFlatButton:
+                id: save_data_button
+                text_color: "white"
+                font_size: "16sp"
+                text: app.textini[app.lang]["pp_save_data"]
+                on_release: root.show_save_settings_popup()
+            MDRectangleFlatButton:
+                id: load_data_button
+                text_color: "white"
+                font_size: "16sp"
+                text: app.textini[app.lang]["pp_load_data"]
+                on_release: root.show_load_settings_popup()
+    MDFloatLayout:
+        MDGridLayout:
+            pos: 1100, 200
+            size_hint: 0.3, 0.6
+            cols: 2
+            rows: 11
+            MDLabel:
+                text: app.textini[app.lang]["pp_label_grayscale"]
+            MDBoxLayout:
+                MDSwitch:
+                    id: gray
+                    active: False
+            MDLabel:
+                text: app.textini[app.lang]["pp_label_blur_strength"]
+            MDBoxLayout:
+                ToggleButton:
+                    id: blur_k_off
+                    text: "OFF"
+                    group: "Blur_k"
+                    state: "down"
+                ToggleButton:
+                    id: blur_k_1
+                    text: "1"
+                    group: "Blur_k"
+                ToggleButton:
+                    id: blur_k_2
+                    text: "2"
+                    group: "Blur_k"
+                ToggleButton:
+                    id: blur_k_3
+                    text: "3"
+                    group: "Blur_k"
+                ToggleButton:
+                    id: blur_k_4
+                    text: "4"
+                    group: "Blur_k"
+            MDLabel:
+                text: app.textini[app.lang]["pp_label_bg_subtraction"]
+            MDBoxLayout:
+                MDSwitch:
+                    id: bg_sub
+                    active: False
+                    disabled: True
+                MDLabel:
+                    halign: "right"
+                    valign: "center"
+                    text: app.textini[app.lang]["pp_label_mask"]
+                MDSwitch:
+                    id: bg_sub_mask
+                    halign: "center"
+                    active: False
+                    disabled: True
+                MDLabel:
+                    text: ""
+            MDLabel:
+                text: app.textini[app.lang]["pp_label_bg_subtraction_th"]
+                font_size: "12sp"
+            MDSlider:
+                id: bg_sub_th
+                min: 1
+                max: 100
+                value: 20
+                disabled: True
+            MDLabel:
+                text: app.textini[app.lang]["pp_label_invert"]
+            MDBoxLayout:
+                MDSwitch:
+                    id: invert
+                    active: False
+            MDLabel:
+                text: app.textini[app.lang]["pp_label_whitening"]
+                font_size: "12sp"
+            MDSlider:
+                id: whitening
+                min: 1
+                max: 255
+                value: 255
+            MDLabel:
+                text: app.textini[app.lang]["pp_label_blacking"]
+                font_size: "12sp"
+            MDSlider:
+                id: blacking
+                min: 1
+                max: 255
+                value: 1
+            MDLabel:
+                text: app.textini[app.lang]["pp_label_edge_strength"]
+            MDBoxLayout:
+                ToggleButton:
+                    id: edge_k_off
+                    text: "OFF"
+                    group: "Edge_k"
+                    state: "down"
+                ToggleButton:
+                    id: edge_k_1
+                    text: "1"
+                    group: "Edge_k"
+                ToggleButton:
+                    id: edge_k_2
+                    text: "2"
+                    group: "Edge_k"
+                ToggleButton:
+                    id: edge_k_3
+                    text: "3"
+                    group: "Edge_k"
+                ToggleButton:
+                    id: edge_k_4
+                    text: "4"
+                    group: "Edge_k"
+            MDLabel:
+                text: app.textini[app.lang]["pp_label_binarization"]
+            MDBoxLayout:
+                MDSwitch:
+                    id: binarization
+                    active: False
+            MDLabel:
+                text: app.textini[app.lang]["pp_label_binarization_th"]
+            MDSlider:
+                id: binarization_th
+                min: 1
+                max: 255
+                value: 127
+            MDLabel:
+                text: app.textini[app.lang]["pp_label_real_time_diff"]
+            MDBoxLayout:
+                ToggleButton:
+                    id: real_time_diff_off
+                    text: "OFF"
+                    group: "real_time_diff_k"
+                    state: "down"
+                    disabled: True
+                ToggleButton:
+                    id: real_time_diff_1
+                    text: "1"
+                    group: "real_time_diff_k"
+                    disabled: True
+                ToggleButton:
+                    id: real_time_diff_2
+                    text: "2"
+                    group: "real_time_diff_k"
+                    disabled: True
+                ToggleButton:
+                    id: real_time_diff_3
+                    text: "3"
+                    group: "real_time_diff_k"
+                    disabled: True
+                ToggleButton:
+                    id: real_time_diff_4
+                    text: "4"
+                    group: "real_time_diff_k"
+                    disabled: True
+
+<LoadSettingsContent>
+    id: load_settings_content
+    orientation: "vertical"
+    MDLabel:
+        size_hint: 1, .2
+        halign: "center"
+        adaptive_height: True
+        text: app.textini[app.lang]["pp_popup_load_settings_message"]
+    MDGridLayout:
+        id: settings_list_layout
+        adaptive_height: True
+        adaptive_width: True
+        size_hint: 1, .6
+        rows: 11
+        cols: 4
+        MDLabel:
+            text: ""
+            size_hint_x: None
+            width: 50
+        MDLabel:
+            text: app.textini[app.lang]["name"]
+            size_hint_x: None
+            width: 400
+        MDLabel:
+            text: app.textini[app.lang]["camera"]
+            size_hint_x: None
+            width: 100
+        MDLabel:
+            text: app.textini[app.lang]["create_time"]
+            size_hint_x: None
+            width: 250
+        CheckBox:
+            id: checkbox_0
+            halign: "center"
+            group: "settings"
+            disabled: True
+        MDLabel:
+            id: name_0
+        MDLabel:
+            id: camera_num_0
+        MDLabel:
+            id: creat_time_0
+        CheckBox:
+            id: checkbox_1
+            halign: "center"
+            group: "settings"
+            disabled: True
+        MDLabel:
+            id: name_1
+        MDLabel:
+            id: camera_num_1
+        MDLabel:
+            id: creat_time_1
+        CheckBox:
+            id: checkbox_2
+            halign: "center"
+            group: "settings"
+            disabled: True
+        MDLabel:
+            id: name_2
+        MDLabel:
+            id: camera_num_2
+        MDLabel:
+            id: creat_time_2
+        CheckBox:
+            id: checkbox_3
+            halign: "center"
+            group: "settings"
+            disabled: True
+        MDLabel:
+            id: name_3
+        MDLabel:
+            id: camera_num_3
+        MDLabel:
+            id: creat_time_3
+        CheckBox:
+            id: checkbox_4
+            halign: "center"
+            group: "settings"
+            disabled: True
+        MDLabel:
+            id: name_4
+        MDLabel:
+            id: camera_num_4
+        MDLabel:
+            id: creat_time_4
+        CheckBox:
+            id: checkbox_5
+            halign: "center"
+            group: "settings"
+            disabled: True
+        MDLabel:
+            id: name_5
+        MDLabel:
+            id: camera_num_5
+        MDLabel:
+            id: creat_time_5
+        CheckBox:
+            id: checkbox_6
+            halign: "center"
+            group: "settings"
+            disabled: True
+        MDLabel:
+            id: name_6
+        MDLabel:
+            id: camera_num_6
+        MDLabel:
+            id: creat_time_6
+        CheckBox:
+            id: checkbox_7
+            halign: "center"
+            group: "settings"
+            disabled: True
+        MDLabel:
+            id: name_7
+        MDLabel:
+            id: camera_num_7
+        MDLabel:
+            id: creat_time_7
+        CheckBox:
+            id: checkbox_8
+            halign: "center"
+            group: "settings"
+            disabled: True
+        MDLabel:
+            id: name_8
+        MDLabel:
+            id: camera_num_8
+        MDLabel:
+            id: creat_time_8
+        CheckBox:
+            id: checkbox_9
+            halign: "center"
+            group: "settings"
+            disabled: True
+        MDLabel:
+            id: name_9
+        MDLabel:
+            id: camera_num_9
+        MDLabel:
+            id: creat_time_9
+    MDGridLayout:
+        size_hint: 1, .1
+        rows: 1
+        cols: 5
+        MDBoxLayout:
+            MDFlatButton:
+                text: app.textini[app.lang]["cansel"]
+                on_release: root.popup_close()
+            MDFlatButton:
+                text: app.textini[app.lang]["load"]
+                on_release: root.screen.load_settings(root.get_filename())
+        MDLabel:
+            text: ""
+        MDLabel:
+            text: ""
+        MDLabel:
+            text: ""
+        MDFlatButton:
+            text: app.textini[app.lang]["delete"]
+            on_release: root.screen.show_delete_settings_dialog(root.get_filename(), root.get_name())
+
+
+<SaveSettingsContent>
+    id: save_settings_content
+    orientation: "vertical"
+    MDLabel:
+        size_hint: 1, .3
+        halign: "center"
+        adaptive_height: True
+        text: app.textini[app.lang]["pp_popup_save_settings_message"]
+    MDTextField:
+        id: settings_filename
+        size_hint: 1, .4
+        required: True
+        hint_text: app.textini[app.lang]["pp_popup_save_settings_name"]
+        max_text_length: 30
+        input_type: "text"
+        color_mode: "custom"
+        text_color_focus: 1, 1, 1, 1
+    MDBoxLayout:
+        size_hint: 1, .3
+        MDFlatButton:
+            text: app.textini[app.lang]["cansel"]
+            on_release: root.popup_close()
+        MDFlatButton:
+            text: app.textini[app.lang]["ok"]
+            on_release: root.save_settings(settings_filename.text)
+
+
+<DispBackgroundImages>
+    id: disp_background
+    orientation: 'vertical'
+    MDLabel:
+        size_hint: 1, .1
+        halign: "center"
+        adaptive_height: True
+        text: app.textini[app.lang]["pp_popup_save_background_message"]
+    MDBoxLayout:
+        size_hint: 1, .1
+        MDLabel:
+            halign: "center"
+            adaptive_height: True
+            text: app.textini[app.lang]["pp_popup_current_background"]
+        MDLabel:
+            halign: "center"
+            adaptive_height: True
+            text: app.textini[app.lang]["pp_popup_new_background"]
+    MDBoxLayout:
+        size_hint: 1, .7
+        Image:
+            id: old_background
+            size: 500, 500
+        Image:
+            id: new_background
+            size: 500, 500
+    MDBoxLayout:
+        size_hint: 1, .1
+        MDFlatButton:
+            text: app.textini[app.lang]["cansel"]
+            on_release: root.popup_close()
+        MDFlatButton:
+            text: app.textini[app.lang]["ok"]
+            on_release: root.save_background_image()

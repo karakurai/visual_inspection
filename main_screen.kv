@@ -1,0 +1,192 @@
+<MainScreen>
+    md_bg_color: .2, .2, .2, 1
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_adfi"]
+            md_bg_color: app.theme_cls.primary_dark
+        MDBoxLayout:
+            MDGridLayout:
+                size_hint: .25, 1
+                rows: 6
+                MDRectangleFlatIconButton:
+                    icon: "camera"
+                    line_color: 0, 0, 0, 0
+                    text_color: "white"
+                    font_size: "18sp"
+                    text: app.textini[app.lang]["menu_camera_settings"]
+                    on_release:
+                        root.leave_screen()
+                        app.open_cameras()
+                        app.sm.transition.direction = "right"
+                        app.sm.current = "camera_setting"
+                MDRectangleFlatIconButton:
+                    icon: "image"
+                    line_color: 0, 0, 0, 0
+                    text_color: "white"
+                    font_size: "18sp"
+                    text: app.textini[app.lang]["menu_preprocessing"]
+                    on_release:
+                        root.leave_screen()
+                        app.open_cameras()
+                        app.sm.transition.direction = "right"
+                        app.sm.current = "preprocessing"
+                MDRectangleFlatIconButton:
+                    icon: "cog"
+                    line_color: 0, 0, 0, 0
+                    text_color: "white"
+                    font_size: "18sp"
+                    text: app.textini[app.lang]["menu_inspection_settings"]
+                    on_release:
+                        root.leave_screen()
+                        app.sm.transition.direction = "right"
+                        app.sm.current = "inspection_setting"
+                MDRectangleFlatIconButton:
+                    icon: "feature-search"
+                    line_color: 0, 0, 0, 0
+                    text_color: "white"
+                    font_size: "18sp"
+                    text: app.textini[app.lang]["menu_dataset"]
+                    on_release:
+                        root.leave_screen()
+                        app.sm.transition.direction = "right"
+                        app.sm.current = "making_dataset"
+                MDRectangleFlatIconButton:
+                    icon: "cog-box"
+                    line_color: 0, 0, 0, 0
+                    text_color: "white"
+                    font_size: "18sp"
+                    text: app.textini[app.lang]["menu_aimodel"]
+                    on_release:
+                        root.leave_screen()
+                        app.sm.transition.direction = "right"
+                        app.sm.current = "aimodel_setting"
+    MDBottomAppBar:
+        md_bg_color: app.theme_cls.primary_dark
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_copyright"]
+            icon: "close"
+            type: "bottom"
+            mode: "end"        
+            on_action_button: app.popup_open()
+
+    MainImageView:
+        id: main_image_view
+    MDFloatLayout:
+        MDRectangleFlatButton:
+            id: change_button
+            pos: 300, 220
+            text_color: "white"
+            font_size: "18sp"
+            text: app.textini[app.lang]["main_change"]
+            on_release: main_image_view.change_image()
+    MDFloatLayout:
+        MDBoxLayout:
+            pos: 600, 100
+            size_hint: .2, .16
+            Button:
+                id: get_image_button
+                text_color: "white"
+                background_color: "blue"
+                font_size: "22sp"
+                text: app.textini[app.lang]["main_inspect_image"]
+                on_release:
+                    main_image_view.get_images()
+    MDFloatLayout:
+        MDGridLayout:
+            pos: 1000, 100
+            size_hint: .4, .3
+            rows: 4
+            cols: 2
+            MDLabel:
+                text: app.textini[app.lang]["main_inspection_name"]
+                font_size: "14sp"
+            MDLabel:
+                id: inspection_name
+                font_size: "14sp"
+            MDLabel:
+                text: app.textini[app.lang]["main_preprocessing_name"]
+                font_size: "14sp"
+            MDLabel:
+                id: image_name
+                font_size: "14sp"
+            MDLabel:
+                text: app.textini[app.lang]["main_save_inspected_image"]
+                font_size: "14sp"
+            MDSwitch:
+                id: save_image
+                active: True
+                disabled: False
+            MDLabel:
+                text: app.textini[app.lang]["main_save_inspection_results"]
+                font_size: "14sp"
+            MDSwitch:
+                id: save_results
+                active: False
+                disabled: False
+    MDFloatLayout:
+        MDGridLayout:
+            pos: 1000, 500
+            size_hint: .4, .3
+            rows: 6
+            cols: 2
+            MDLabel:
+                text: app.textini[app.lang]["main_inspected_image"]
+                font_size: "14sp"
+            MDLabel:
+                text: app.textini[app.lang]["main_result"]
+                font_size: "14sp"
+            MDLabel:
+                id: preprocessing_0
+                font_size: "14sp"
+            MDRaisedButton:
+                id: result_0
+                text_color: "white"
+                md_bg_color: "black"
+                font_size: "14sp"
+                on_release: main_image_view.show_image(0)
+            MDLabel:
+                id: preprocessing_1
+                font_size: "14sp"
+            MDRaisedButton:
+                id: result_1
+                text_color: "white"
+                md_bg_color: "black"
+                font_size: "14sp"
+                on_release: main_image_view.show_image(1)
+            MDLabel:
+                id: preprocessing_2
+                font_size: "14sp"
+            MDRaisedButton:
+                id: result_2
+                text_color: "white"
+                md_bg_color: "black"
+                font_size: "14sp"
+                on_release: main_image_view.show_image(2)
+            MDLabel:
+                id: preprocessing_3
+                font_size: "14sp"
+            MDRaisedButton:
+                id: result_3
+                text_color: "white"
+                md_bg_color: "black"
+                font_size: "14sp"
+                on_release: main_image_view.show_image(3)
+            MDLabel:
+                id: preprocessing_4
+                font_size: "14sp"
+            MDRaisedButton:
+                id: result_4
+                text_color: "white"
+                md_bg_color: "black"
+                font_size: "14sp"
+                on_release: main_image_view.show_image(4)
+    MDFloatLayout:
+        MDRaisedButton:
+            id: message
+            pos: 300, 780
+            size_hint: .8, .05
+            text_color: "white"
+            md_bg_color: "black"
+            font_size: "18sp"
+            text: app.textini[app.lang]["main_massage_no_inspection"]

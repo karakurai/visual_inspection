@@ -1,0 +1,286 @@
+<AimodelSettingScreen>
+    md_bg_color: .2, .2, .2, 1
+    on_pre_enter: self.on_pre_enter()
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_adfi"]
+            md_bg_color: app.theme_cls.primary_dark
+        MDLabel:
+            id: message
+            halign: "center"
+            size_hint: 1, .1
+            color: 1, 1, 1, 1 
+            text: app.textini[app.lang]["aimodel_settings"] + "  " + app.textini[app.lang]["as_top_message"]
+            padding: "4dp", "4dp"
+        MDLabel:
+            id :space
+        MDRectangleFlatButton:
+            size_hint: .3, .1
+            pos_hint: {'center_x': .5}
+            text_color: "white"
+            font_size: "18sp"
+            text: app.textini[app.lang]["finish"]
+            on_release:
+                app.sm.transition.direction = "left"
+                app.sm.current = "main"
+            padding: "4dp", "4dp"
+        MDLabel:
+            id: bottom_space
+            halign: "center"
+            size_hint: 1, .15
+            color: 0, 0, 0, 0
+    MDBottomAppBar:
+        md_bg_color: app.theme_cls.primary_dark
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_copyright"]
+            icon: "close"
+            type: "bottom"
+            mode: "end"        
+            on_action_button: app.popup_open()
+    MDFloatLayout:
+        MDGridLayout:
+            id: inspection_list_layout
+            adaptive_height: True
+            adaptive_width: True
+            size_hint: 1, .5
+            pos: 0, 300
+            rows: 11
+            cols: 6
+            MDLabel:
+                text: ""
+                size_hint_x: None
+                width: 50
+            MDLabel:
+                text: app.textini[app.lang]["preprocessing_name"]
+                size_hint_x: None
+                width: 250
+            MDLabel:
+                text: app.textini[app.lang]["camera_num"]
+                size_hint_x: None
+                width: 100
+            MDLabel:
+                text: app.textini[app.lang]["api_key"]
+                size_hint_x: None
+                width: 320
+            MDLabel:
+                text: app.textini[app.lang]["model_id"]
+                size_hint_x: None
+                width: 350
+            MDLabel:
+                text: app.textini[app.lang]["model_type"]
+                size_hint_x: None
+                width: 120
+            CheckBox:
+                id: checkbox_0
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_0
+            MDLabel:
+                id: camera_num_0
+            MDLabel:
+                id: api_key_0
+            MDLabel:
+                id: model_id_0
+            MDLabel:
+                id: model_type_0
+            CheckBox:
+                id: checkbox_1
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_1
+            MDLabel:
+                id: camera_num_1
+            MDLabel:
+                id: api_key_1
+            MDLabel:
+                id: model_id_1
+            MDLabel:
+                id: model_type_1
+            CheckBox:
+                id: checkbox_2
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_2
+            MDLabel:
+                id: camera_num_2
+            MDLabel:
+                id: api_key_2
+            MDLabel:
+                id: model_id_2
+            MDLabel:
+                id: model_type_2
+            CheckBox:
+                id: checkbox_3
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_3
+            MDLabel:
+                id: camera_num_3
+            MDLabel:
+                id: api_key_3
+            MDLabel:
+                id: model_id_3
+            MDLabel:
+                id: model_type_3
+            CheckBox:
+                id: checkbox_4
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_4
+            MDLabel:
+                id: camera_num_4
+            MDLabel:
+                id: api_key_4
+            MDLabel:
+                id: model_id_4
+            MDLabel:
+                id: model_type_4
+            CheckBox:
+                id: checkbox_5
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_5
+            MDLabel:
+                id: camera_num_5
+            MDLabel:
+                id: api_key_5
+            MDLabel:
+                id: model_id_5
+            MDLabel:
+                id: model_type_5
+            CheckBox:
+                id: checkbox_6
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_6
+            MDLabel:
+                id: camera_num_6
+            MDLabel:
+                id: api_key_6
+            MDLabel:
+                id: model_id_6
+            MDLabel:
+                id: model_type_6
+            CheckBox:
+                id: checkbox_7
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_7
+            MDLabel:
+                id: camera_num_7
+            MDLabel:
+                id: api_key_7
+            MDLabel:
+                id: model_id_7
+            MDLabel:
+                id: model_type_7
+            CheckBox:
+                id: checkbox_8
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_8
+            MDLabel:
+                id: camera_num_8
+            MDLabel:
+                id: api_key_8
+            MDLabel:
+                id: model_id_8
+            MDLabel:
+                id: model_type_8
+            CheckBox:
+                id: checkbox_9
+                halign: "center"
+                group: "settings"
+                disabled: True
+            MDLabel:
+                id: name_9
+            MDLabel:
+                id: camera_num_9
+            MDLabel:
+                id: api_key_9
+            MDLabel:
+                id: model_id_9
+            MDLabel:
+                id: model_type_9
+    MDGridLayout:
+        size_hint: .8, .1
+        pos: 200, 200
+        rows: 1
+        cols: 5
+        MDBoxLayout:
+            MDRaisedButton:
+                id: settings_button
+                text: app.textini[app.lang]["settings"]
+                on_release: root.show_save_aimodel_popup()
+            MDLabel:
+                text: ""
+            MDLabel:
+                text: ""
+            MDLabel:
+                text: ""
+            MDLabel:
+                text: ""
+
+
+<SaveAimodelContent>
+    id: save_aimodel_content
+    orientation: "vertical"
+    MDLabel:
+        size_hint: 1, .2
+        halign: "center"
+        adaptive_height: True
+        text: app.textini[app.lang]["as_popup_save_aimodel_message"]
+    MDTextField:
+        id: api_key
+        size_hint: 1, .2
+        required: True
+        hint_text: app.textini[app.lang]["as_popup_save_model_key"]
+        max_text_length: 40
+        input_type: "text"
+        color_mode: "custom"
+        text_color_focus: 1, 1, 1, 1
+    MDTextField:
+        id: model_id
+        size_hint: 1, .2
+        required: True
+        hint_text: app.textini[app.lang]["as_popup_save_model_id"]
+        max_text_length: 40
+        input_type: "text"
+        color_mode: "custom"
+        text_color_focus: 1, 1, 1, 1
+    MDTextField:
+        id: model_type
+        size_hint: 1, .2
+        required: True
+        hint_text: app.textini[app.lang]["as_popup_save_model_type"]
+        max_text_length: 3
+        input_type: "text"
+        color_mode: "custom"
+        text_color_focus: 1, 1, 1, 1
+    MDBoxLayout:
+        size_hint: 1, .2
+        MDFlatButton:
+            text: app.textini[app.lang]["cansel"]
+            on_release: root.popup_close()
+        MDFlatButton:
+            text: app.textini[app.lang]["ok"]
+            on_release: root.save_aimodel(api_key.text, model_id.text, model_type.text)

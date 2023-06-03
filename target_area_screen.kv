@@ -1,0 +1,168 @@
+<TargetAreaScreen>:
+    md_bg_color: .2, .2, .2, 1
+    on_pre_enter: self.on_pre_enter()
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_adfi"]
+            md_bg_color: app.theme_cls.primary_dark
+        MDLabel:
+            id: message
+            halign: "center"
+            size_hint: 1, .1
+            color: 1, 1, 1, 1 
+            text: app.textini[app.lang]["camera_settings"] + "  " + app.textini[app.lang]["step"] + " 1/2 :  " + app.textini[app.lang]["ta_set_area"]
+            padding: "4dp", "4dp"
+        MDBoxLayout:
+            id: buttons
+            size_hint: 1, .1
+            MDRectangleFlatButton:
+                id: cb0
+                text_color: "white"
+                text: "Camera 0: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: image_view.active_camera(0)
+            MDRectangleFlatButton:
+                id: cb1
+                text_color: "white"
+                text: "Camera 1: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: image_view.active_camera(1)
+            MDRectangleFlatButton:
+                id: cb2
+                text_color: "white"
+                text: "Camera 2: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: image_view.active_camera(2)
+            MDRectangleFlatButton:
+                id: cb3
+                text_color: "white"
+                text: "Camera 3: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: image_view.active_camera(3)
+            MDRectangleFlatButton:
+                id: cb4
+                text_color: "white"
+                text: "Camera 4: " + app.textini[app.lang]["no_camera"]
+                disabled: True
+                on_release: image_view.active_camera(4)
+        MDLabel:
+            id :space
+        MDBoxLayout:
+            size_hint: 1, .1
+            MDLabel:
+                id: space
+                size_hint: .3, 1
+                text: ""
+            MDRectangleFlatButton:
+                size_hint: .3, 1
+                pos_hint: {'center_x': .5}
+                text_color: "white"
+                font_size: "18sp"
+                text: app.textini[app.lang]["previous"]
+                on_release:
+                    image_view.clock_unschedule()
+                    app.sm.transition.direction = "right"
+                    app.sm.current = "camera_setting"
+                padding: "4dp", "4dp"
+            MDLabel:
+                id: space
+                size_hint: .1, 1
+                text: ""
+            MDRectangleFlatButton:
+                size_hint: .3, 1
+                pos_hint: {'center_x': .5}
+                text_color: "white"
+                font_size: "18sp"
+                text: app.textini[app.lang]["next"]
+                on_release:
+                    image_view.clock_unschedule()
+                    app.sm.transition.direction = "left"
+                    app.sm.current = "preprocessing"
+                padding: "4dp", "4dp"
+            MDLabel:
+                id: space
+                size_hint: .3, 1
+                text: ""
+        MDLabel:
+            id: bottom_space
+            halign: "center"
+            size_hint: 1, .15
+            color: 0, 0, 0, 0
+    MDBottomAppBar:
+        md_bg_color: app.theme_cls.primary_dark
+        MDTopAppBar:
+            title: app.textini[app.lang]["label_copyright"]
+            icon: "close"
+            type: "bottom"
+            mode: "end"        
+            on_action_button: app.popup_open()
+    ImageView:
+        id: image_view
+    MDFloatLayout:
+        MDLabel:
+            id: camera_name
+            size_hint: 0.1, 0.1
+            pos: 1250, 650
+            font_size: "22sp"
+            text: ""
+    MDFloatLayout:
+        MDBoxLayout:
+            pos: 1300, 300
+            size_hint: .15, .4
+            orientation: 'vertical'
+            MDLabel:
+                text: app.textini[app.lang]["ta_inspection_area"]
+            MDLabel:
+                id: x1
+            MDLabel:
+                id: y1
+            MDLabel:
+                text: ""
+            MDLabel:
+                id: x2
+            MDLabel:
+                id: y2
+    MDFloatLayout:
+        MDBoxLayout:
+            pos: 1250, 300
+            size_hint: .15, .4
+            orientation: 'vertical'
+            MDLabel:
+                text: ""
+            MDLabel:
+                text: app.textini[app.lang]["ta_x1"]
+            MDLabel:
+                text: app.textini[app.lang]["ta_y1"]
+            MDLabel:
+                text: ""
+            MDLabel:
+                text: app.textini[app.lang]["ta_x2"]
+            MDLabel:
+                text: app.textini[app.lang]["ta_y2"]
+    MDFloatLayout:
+        MDBoxLayout:
+            pos: 1200, 250
+            size_hint: .2, .1
+            MDRectangleFlatButton:
+                id: save_area_button
+                text_color: "white"
+                font_size: "18sp"
+                text: app.textini[app.lang]["ta_save_area"]
+                on_release: image_view.show_save_area_dialog()
+                disabled: True
+            MDRectangleFlatButton:
+                id: delete_saved_area_button
+                text_color: "white"
+                font_size: "18sp"
+                text: app.textini[app.lang]["ta_delete_saved_area"]
+                on_release: image_view.show_delete_area_dialog()
+                disabled: True
+    MDFloatLayout:
+        MDRectangleFlatButton:
+            pos: 200, 150
+            id: pause_button
+            text_color: "white"
+            font_size: "18sp"
+            text: app.textini[app.lang]["ta_pause"]
+            on_release: image_view.pause()
