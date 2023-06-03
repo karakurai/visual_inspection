@@ -33,7 +33,7 @@ class MakingDatasetScreen(MDScreen):
             self.ids["anomaly_button"].disabled = True
             self.ids["message"].text = (
                 self.app.textini[self.app.lang]["making_dataset"]
-                + " :  "
+                + "  "
                 + self.app.textini[self.app.lang]["md_error_message"]
             )
         else:
