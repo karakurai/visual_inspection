@@ -42,7 +42,7 @@ class MakingDatasetScreen(MDScreen):
             self.ids["anomaly_button"].disabled = False
             self.ids["message"].text = (
                 self.app.textini[self.app.lang]["making_dataset"]
-                + " :  "
+                + "  "
                 + self.app.textini[self.app.lang]["md_message"]
             )
             if len(self.app.current_inspection_dict["PREPROCESSING_LIST"]) <= 1:
