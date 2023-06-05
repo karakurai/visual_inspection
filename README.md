@@ -34,6 +34,21 @@ However, if the camera cannot be change the settings, the value will not be refl
 conf.ini
 ```
 
+Training images for creating an AI model are saved in the following directory.
+```
+dataset
+```
+
+The inspected images are saved in the following directory.
+```
+inspection_image
+```
+
+Result images and result CSV are saved in the following directory.
+```
+result
+```
+
 # To Software Developers
 This software is MIT licensed, so you can use it commercially.  
 You may also modify the source code and provide it to your customers.
@@ -81,6 +96,21 @@ https://adfi.jp/
 ただし、設定変更できないカメラの場合、値は反映されません。
 ```
 conf.ini
+```
+
+AIモデル作成のための学習画像は下記ディレクトリに保存されます。
+```
+dataset
+```
+
+検査した画像は下記ディレクトリに保存されます。
+```
+inspection_image
+```
+
+結果画像と結果CSVは下記ディレクトリに保存されます。
+```
+result
 ```
 
 # ソフトウェア開発企業向け情報
