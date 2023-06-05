@@ -1,4 +1,4 @@
-The Japanese ReadMe is described in the second half. (後半に日本語のReadMeを記載)
+The Japanese ReadMe is described in the second half. (後半に[日本語のReadMe](#画像検査アプリケーション)を記載)
 
 # Visual Inspection Application
 This application can easily automate visual inspections and foreign matter inspections in factories.  
