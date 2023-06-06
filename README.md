@@ -6,6 +6,15 @@ All you have to do is prepare an inexpensive web camera and a PC (no GPU require
 Because MIT license, you can use it for commercial purposes and modify the source code.
 ![app screen](images/app_screen.png)
 
+## Application features
+ - Works on a PC without GPU.
+ - Works with an inexpensive webcam (no need for expensive camera).
+ - Inspection supports both conventional AI and deep learning-based AI.
+ - AI model creation with no-code is realized by using ADFI.
+ - Capable of pre-processing more than 10 types of images (Grayscaling, edge extraction, mask processing, etc.).
+ - Multiple AIs can simultaneously inspect (double check).
+ - By using multiple cameras, the top and sides of an object can be inspected simultaneously.
+
 # Quick & easy start
 ## 1) Install
 Clone this repository and install the libraries(numpy, opencv-python, Pillow, kivy, kivymd) in a Python>=3.7.0 environment.
@@ -69,6 +78,15 @@ text.ini
 工場での外観検査や異物検査を簡単に自動化できるアプリケーションです。表示言語は英語と日本語を選択できます。  
 安価なWEBカメラとPC（GPU不要）を用意するだけで、すぐに検査を開始できます。  
 MITライセンスのため、商用利用やソースコードの改変が可能です。
+
+## アプリケーションの特徴
+ - 一般的な（GPU無しの）PCで動作します。
+ - 安価なウェブカメラで動作します (高価なカメラは必要ありません)。
+ - 従来の AI 、ディープラーニングベースの AI のどちらも対応しています。
+ - ADFIを利用することでノーコードでのAIモデル作成を実現しています。
+ - 10種類以上の画像の前処理（グレースケール化、エッジ抽出、マスク処理など）が利用できます。
+ - 複数のAIによる同時検査（ダブルチェック）が可能です。
+ - 複数のカメラを使用することで、対象物の上面と側面を同時に検査することも可能です。
 
 # 開始手順
 ## 1) インストール
