@@ -22,7 +22,7 @@ python main.py
 ```
 
 ## 3) Set display scaling
-If the layout of the application is broken, set the display scaling (display settings in your OS) to 100%.
+If the layout of the application is broken, [set the display scaling (display settings in your OS) to 100%.](https://support.microsoft.com/en-us/windows/1d5830c3-eee3-8eaa-836b-abcc37d99b9a)
 
 # Application manual
 The Application manual can be downloaded below.  
@@ -86,7 +86,7 @@ python main.py
 ```
 
 ## 3) ディスプレイのスケーリング設定
-アプリケーションのレイアウトが崩れていた場合、OSのディスプレイ設定の拡大率を100%に設定してください。
+アプリケーションのレイアウトが崩れていた場合、[OSのディスプレイ設定の拡大率を100%に設定してください。](https://support.microsoft.com/ja-jp/windows/1d5830c3-eee3-8eaa-836b-abcc37d99b9a)
 
 # アプリケーションマニュアル
 下記URLからアプリケーションマニュアルをダウンロードできます。  
