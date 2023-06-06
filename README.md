@@ -9,6 +9,7 @@ Because MIT license, you can use it for commercial purposes and modify the sourc
 ## Application features
  - Works on a PC without GPU.
  - Works with an inexpensive webcam (no need for expensive camera).
+ - You can specify the area to inspect in the image.
  - Inspection supports both conventional AI and deep learning-based AI.
  - AI model creation with no-code is realized by using ADFI.
  - Capable of pre-processing more than 10 types of images (Grayscaling, edge extraction, mask processing, etc.).
@@ -82,6 +83,7 @@ MITライセンスのため、商用利用やソースコードの改変が可�
 ## アプリケーションの特徴
  - 一般的な（GPU無しの）PCで動作します。
  - 安価なウェブカメラで動作します (高価なカメラは必要ありません)。
+ - 画像内の検査する領域を指定できます。
  - 従来の AI 、ディープラーニングベースの AI のどちらも対応しています。
  - ADFIを利用することでノーコードでのAIモデル作成を実現しています。
  - 10種類以上の画像の前処理（グレースケール化、エッジ抽出、マスク処理など）が利用できます。
