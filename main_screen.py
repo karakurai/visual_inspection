@@ -382,9 +382,10 @@ class MainImageView(MDFloatLayout):
             self.inspection_image_path_list[int(index)] = None
         else:
             self.inspection_image_path_list[int(index)] = save_image_path
-            with open(result_csv_path, "a", newline="") as f:
-                writer = csv.writer(f)
-                writer.writerow([result_json["image_name"], result_json["result"], result_json["time"], result_json["anomaly_score"], result_json["main_prediction_result"], result_json["sub_prediction_result"]])
+            if result_json is not None:
+                with open(result_csv_path, "a", newline="") as f:
+                    writer = csv.writer(f)
+                    writer.writerow([result_json["image_name"], result_json["result"], result_json["time"], result_json["anomaly_score"], result_json["main_prediction_result"], result_json["sub_prediction_result"]])
         self.result_image_path_list[int(index)] = result_image_save_path
         self.processing -= 1
 
@@ -392,10 +393,10 @@ class MainImageView(MDFloatLayout):
         inspection_img_path = self.inspection_image_path_list[int(result_num)]
         if inspection_img_path is not None and os.path.exists(inspection_img_path):
             img = cv2.imread(inspection_img_path)
-            cv2.imshow('Inspection Image', img)
+            cv2.imshow('Inspection Image ' + str(result_num), img)
             cv2.waitKey(1)
         result_img_path = self.result_image_path_list[int(result_num)]
         if result_img_path is not None and os.path.exists(result_img_path):
             img = cv2.imread(result_img_path)
-            cv2.imshow('Result Image', img)
+            cv2.imshow('Result Image ' + str(result_num), img)
             cv2.waitKey(1)
