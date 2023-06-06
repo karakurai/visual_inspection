@@ -4,6 +4,7 @@ The Japanese ReadMe is described in the second half. (後半に[日本語のRead
 This application can easily automate visual inspections and foreign matter inspections in factories.  
 All you have to do is prepare an inexpensive web camera and a PC (no GPU required) and you can start inspection immediately.  
 Because MIT license, you can use it for commercial purposes and modify the source code.
+![app screen](images/app_screen.png)
 
 # Quick & easy start
 ## 1) Install
@@ -65,7 +66,7 @@ text.ini
 ```
 
 # 画像検査アプリケーション
-工場での外観検査や異物検査を簡単に自動化できるアプリケーションです。  
+工場での外観検査や異物検査を簡単に自動化できるアプリケーションです。表示言語は英語と日本語を選択できます。  
 安価なWEBカメラとPC（GPU不要）を用意するだけで、すぐに検査を開始できます。  
 MITライセンスのため、商用利用やソースコードの改変が可能です。
 
