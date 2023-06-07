@@ -4,7 +4,9 @@ The Japanese ReadMe is described in the second half. (後半に[日本語のRead
 This application can easily automate visual inspections and foreign matter inspections in factories.  
 All you have to do is prepare an inexpensive web camera and a PC (no GPU required) and you can start inspection immediately.  
 Because MIT license, you can use it for commercial purposes and modify the source code.
-![app screen](images/app_screen.png)
+
+The following images are application screens and a camera installation example.
+![app screens](images/readme_image.png)
 
 ## Application features
  - Works on a PC without GPU.
