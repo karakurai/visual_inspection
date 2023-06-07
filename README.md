@@ -12,7 +12,7 @@ The following images are application screens and a camera installation example.
  - Works on a PC without GPU.
  - Works with an inexpensive webcam (no need for expensive camera).
  - You can specify the area to inspect in the image.
- - Inspection supports both conventional AI and deep learning-based AI.
+ - Inspection supports both conventional AI and deep-learning-based AI.
  - AI model creation with no-code is realized by using ADFI.
  - Capable of pre-processing more than 10 types of images (Grayscaling, edge extraction, mask processing, etc.).
  - Multiple AIs can simultaneously inspect (double check).
