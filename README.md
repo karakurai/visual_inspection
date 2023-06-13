@@ -36,9 +36,10 @@ python main.py
 ## 3) Set display scaling
 If the layout of the application is broken, [set the display scaling (display settings in your OS) to 100%.](https://support.microsoft.com/en-us/windows/1d5830c3-eee3-8eaa-836b-abcc37d99b9a)
 
-# Application manual
-The Application manual can be downloaded below.  
-https://adfi.jp/
+# User manual
+The user manual can be downloaded below.  
+[User Manual](https://adfi.jp/wp-content/uploads/User_manual.pdf)
+
 
 # To Manufacturing Companies
 By modifying the file below, you can change the initial values of the application, such as camera FPS and resolution.  
@@ -110,9 +111,9 @@ python main.py
 ## 3) ディスプレイのスケーリング設定
 アプリケーションのレイアウトが崩れていた場合、[OSのディスプレイ設定の拡大率を100%に設定してください。](https://support.microsoft.com/ja-jp/windows/1d5830c3-eee3-8eaa-836b-abcc37d99b9a)
 
-# アプリケーションマニュアル
-下記URLからアプリケーションマニュアルをダウンロードできます。  
-https://adfi.jp/
+# 操作マニュアル
+下記から操作マニュアルをダウンロードできます。  
+[操作マニュアル](https://adfi.jp/wp-content/uploads/User_manual.pdf)
 
 # 製造業向け情報
 下記ファイルを修正することで、カメラのFPSや解像度など、アプリケーションの初期値を変更できます。  
