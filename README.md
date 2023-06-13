@@ -113,7 +113,7 @@ python main.py
 
 # 操作マニュアル
 下記から操作マニュアルをダウンロードできます。  
-[操作マニュアル](https://adfi.jp/wp-content/uploads/User_manual.pdf)
+[操作マニュアル](https://adfi.jp/wp-content/uploads/操作マニュアル.pdf)
 
 # 製造業向け情報
 下記ファイルを修正することで、カメラのFPSや解像度など、アプリケーションの初期値を変更できます。  
