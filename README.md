@@ -20,7 +20,7 @@ The following images are application screens and a camera installation example.
 
 # Quick & easy start
 ## 1) Install
-Clone this repository and install the libraries(numpy, opencv-python, Pillow, kivy, kivymd) in a Python>=3.7.0 environment.
+Clone this repository and install the libraries(numpy, opencv-python, Pillow, kivy, kivymd) in a Python 3.9 environment. (The verified version of this source code is Python 3.9.13.)
 ```
 git clone https://github.com/karakurai/visual_inspection.git
 cd visual_inspection
@@ -95,7 +95,8 @@ MITライセンスのため、商用利用やソースコードの改変が可�
 
 # 開始手順
 ## 1) インストール
-このリポジトリをクローンし、Python3.7以上の環境でライブラリ（numpy, opencv-python, Pillow, kivy, kivymd）をインストールしてください。
+このリポジトリをクローンし、Python 3.9の環境でライブラリ（numpy, opencv-python, Pillow, kivy, kivymd）をインストールしてください。（動作確認済みバージョンは Python 3.9.13 です。）
+
 ```
 git clone https://github.com/karakurai/visual_inspection.git
 cd visual_inspection
