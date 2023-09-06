@@ -95,11 +95,12 @@ MITライセンスのため、商用利用やソースコードの改変が可�
 ka
 # 開始手順
 ## WindowsPC用の簡単セットアップ手順
-WindowsPCの場合は簡単にインストール＆セットアップできる便利ツールを用意しています。  
+WindowsPCの場合は簡単にセットアップできる便利ツールを用意しています。  
 [こちら](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/ReadMe_ja.md)のページの手順をご参照ください。  
 
-WindowsPC以外の場合（通常のインストール方法）は以降の手順に従って実施してください。
+WindowsPC以外の場合（通常のセットアップ方法）は以降の手順に従って実施してください。
 
+## 通常（WindowsPC以外）のセットアップ手順
 ## 1) インストール
 このリポジトリをクローンし、Python 3.8 または Python 3.9の環境でライブラリ（numpy, opencv-python, Pillow, kivy, kivymd）をインストールしてください。Pythonのバージョンが異なると、これらのライブラリをインストールできない場合があります。（動作確認済みバージョンは Python 3.9.13 です。）
 
