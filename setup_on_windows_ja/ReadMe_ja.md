@@ -1,9 +1,12 @@
-本ディレクトリ内の下記ファイルは、WindowsのPCでの本アプリケーションをインストール＆セットアップする際の便利ツールです。
-Python3.9をインストール済みのWindowsPCで動作します。  
+本ディレクトリ内の[setup_tool_ja.zip](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/setup_tool_ja.zip)には、WindowsのPCでの本アプリケーションをインストール＆セットアップする際の便利ツールである下記ファイル入っています。
+ - 初期セットアップ（画像検査アプリケーション）.bat　：初期セットアップする際に、一度だけ実行してください。
+ - Pythonバージョン確認.bat　：実行することでアプリケーションを起動できます。
+
+[こちら](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/setup_tool_ja.zip)のページの右上のダウンロードボタンを押し、[setup_tool_ja.zip](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/setup_tool_ja.zip)ファイルをダウンロードしてください。ダウンロードしたZIPファイルを展開し、ご利用ください。
+
+これらの便利ツールは、Python3.9をインストール済みのWindowsPCで動作します。  
 WindowsPCへのPython3.9のインストール方法は[「Pythonのインストール」](https://learn.microsoft.com/ja-jp/windows/python/beginners#install-python)を参照してください。
 
- - [初期セットアップ（画像検査アプリケーション）.bat](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/%E5%88%9D%E6%9C%9F%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E7%94%BB%E5%83%8F%E6%A4%9C%E6%9F%BB%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%EF%BC%89.bat)　：初期セットアップする際に、一度だけ実行してください。
- - [Pythonバージョン確認.bat](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/%E7%94%BB%E5%83%8F%E6%A4%9C%E6%9F%BB%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E8%B5%B7%E5%8B%95.bat)　：実行することでアプリケーションを起動できます。
 
 ## 手順
 ### 初期セットアップ
@@ -13,9 +16,9 @@ WindowsPCへのPython3.9のインストール方法は[「Pythonのインスト�
  - 「Code」ボタン⇒「Download ZIP」ボタンを押して、ソースコードのZIPファイル（visual_inspection-main.zip）をダウンロードします。
 
  - ダウンロードが完了したら、 ZIPファイルをお好きな場所（画像検査アプリケーションのプログラムを配置したいディレクトリ）に移動させてください。この時点ではZIPファイルは展開しないでください。
- - 上記のZIPファイルを配置したディレクトリ内に、下記ファイルをダウンロードして配置します。
-   - [初期セットアップ（画像検査アプリケーション）.bat](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/%E5%88%9D%E6%9C%9F%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E7%94%BB%E5%83%8F%E6%A4%9C%E6%9F%BB%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%EF%BC%89.bat)
-   - [Pythonバージョン確認.bat](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/%E7%94%BB%E5%83%8F%E6%A4%9C%E6%9F%BB%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E8%B5%B7%E5%8B%95.bat)
+ - 上記のZIPファイルを配置したディレクトリ内に、ダウンロードした下記ファイルを配置します。
+   - 初期セットアップ（画像検査アプリケーション）.bat
+   - Pythonバージョン確認.bat
  - 「初期セットアップ（画像検査アプリケーション）.bat」をダブルクリックして実行します。
  - コマンドプロンプトが自動起動し、セットアップ処理が実行されるので、しばらく待ちます。
  - 「画像検査アプリケーションの初期セットアップが正常完了しました。」と表示されれば、初期セットアップが完了です。
