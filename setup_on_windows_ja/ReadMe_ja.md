@@ -1,8 +1,8 @@
-本ディレクトリ内の[setup_tool_ja.zip](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/setup_tool_ja.zip)には、WindowsのPCでの本アプリケーションをインストール＆セットアップする際の便利ツールである下記ファイル入っています。
+本ディレクトリ内の[setup_tool_ja.zip](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/setup_tool_ja.zip)には、WindowsのPCでの本アプリケーションをインストール＆セットアップする際の便利ツールである下記ファイルが入っています。
  - 初期セットアップ（画像検査アプリケーション）.bat　：初期セットアップする際に、一度だけ実行してください。
  - Pythonバージョン確認.bat　：実行することでアプリケーションを起動できます。
 
-[こちら](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/setup_tool_ja.zip)のページの右上のダウンロードボタンを押し、[setup_tool_ja.zip](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/setup_tool_ja.zip)ファイルをダウンロードしてください。ダウンロードしたZIPファイルを展開し、ご利用ください。
+[setup_tool_ja.zip](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/setup_tool_ja.zip)のページの右上のダウンロードボタンを押し、[setup_tool_ja.zip](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/setup_tool_ja.zip)ファイルをダウンロードしてください。ダウンロードしたZIPファイルを展開し、ご利用ください。
 
 これらの便利ツールは、Python3.9をインストール済みのWindowsPCで動作します。  
 WindowsPCへのPython3.9のインストール方法は[「Pythonのインストール」](https://learn.microsoft.com/ja-jp/windows/python/beginners#install-python)を参照してください。
