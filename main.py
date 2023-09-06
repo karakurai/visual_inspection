@@ -4,9 +4,6 @@ import os
 import pickle
 
 import cv2
-from aimodel_setting_screen import AimodelSettingScreen
-from camera_setting_screen import CameraSettingScreen
-from inspection_setting_screen import InspectionSettingScreen
 from kivy.core.text import DEFAULT_FONT, LabelBase
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -18,6 +15,10 @@ from kivymd.toast import toast
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.screenmanager import MDScreenManager
+
+from aimodel_setting_screen import AimodelSettingScreen
+from camera_setting_screen import CameraSettingScreen
+from inspection_setting_screen import InspectionSettingScreen
 from main_screen import MainScreen
 from making_dataset_screen import MakingDatasetScreen
 from preprocessing_screen import PreprocessingScreen
@@ -123,9 +124,8 @@ class InspectionApp(MDApp):
                         "CAP_PROP_GAIN": cap.get(cv2.CAP_PROP_GAIN),
                         "CAP_PROP_GAMMA": cap.get(cv2.CAP_PROP_GAMMA),
                         "CAP_PROP_EXPOSURE": cap.get(cv2.CAP_PROP_EXPOSURE),
-                        "CAP_PROP_AUTO_EXPOSURE": cap.get(cv2.CAP_PROP_AUTO_EXPOSURE),
                         "CAP_PROP_FOCUS": cap.get(cv2.CAP_PROP_FOCUS),
-                        "CAP_PROP_AUTOFOCUS": cap.get(cv2.CAP_PROP_AUTOFOCUS),
+                        "CAP_PROP_WB_TEMPERATURE": cap.get(cv2.CAP_PROP_WB_TEMPERATURE),
                     }
                     editable_para = {
                         "EDIT_FRAME_WIDTH": cap.set(
@@ -162,16 +162,25 @@ class InspectionApp(MDApp):
                         ),
                         "EDIT_AUTO_EXPOSURE": cap.set(
                             cv2.CAP_PROP_AUTO_EXPOSURE,
-                            camera_para["CAP_PROP_AUTO_EXPOSURE"],
+                            0.1,
                         ),
                         "EDIT_FOCUS": cap.set(
                             cv2.CAP_PROP_FOCUS, camera_para["CAP_PROP_FOCUS"]
                         ),
-                        "EDIT_AUTOFOCUS": cap.set(
-                            cv2.CAP_PROP_AUTOFOCUS, camera_para["CAP_PROP_AUTOFOCUS"]
+                        "EDIT_AUTOFOCUS": cap.set(cv2.CAP_PROP_AUTOFOCUS, 0.1),
+                        "EDIT_AUTO_WB": cap.set(cv2.CAP_PROP_AUTO_WB, 0.1),
+                        "EDIT_WB_TEMPERATURE": cap.set(
+                            cv2.CAP_PROP_WB_TEMPERATURE,
+                            camera_para["CAP_PROP_WB_TEMPERATURE"],
                         ),
                     }
                     camera_para.update(editable_para)
+                    update_auto_para = {
+                        "CAP_PROP_AUTO_EXPOSURE": cap.get(cv2.CAP_PROP_AUTO_EXPOSURE),
+                        "CAP_PROP_AUTOFOCUS": cap.get(cv2.CAP_PROP_AUTOFOCUS),
+                        "CAP_PROP_AUTO_WB": cap.get(cv2.CAP_PROP_AUTO_WB),
+                    }
+                    camera_para.update(update_auto_para)
                     self.camera_parameter_list[i] = camera_para
                     self.camera_list[i] = cap
                     self.camera_count += 1
@@ -341,6 +350,11 @@ class InspectionApp(MDApp):
                                 self.camera_list[camera_num].set(
                                     cv2.CAP_PROP_AUTOFOCUS,
                                     camera_param_dict["CAP_PROP_AUTOFOCUS"],
+                                )
+                            if camera_param_dict["EDIT_AUTO_WB"]:
+                                self.camera_list[camera_num].set(
+                                    cv2.CAP_PROP_AUTO_WB,
+                                    camera_param_dict["CAP_PROP_AUTO_WB"],
                                 )
                             if "RATIO_1" in camera_param_dict:
                                 self.current_ratio1[camera_num] = camera_param_dict[

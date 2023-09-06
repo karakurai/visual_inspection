@@ -115,6 +115,15 @@ class CameraSettingScreen(MDScreen):
                     tmp_cap.set(
                         cv2.CAP_PROP_AUTOFOCUS, camera_param_dict["CAP_PROP_AUTOFOCUS"]
                     )
+                if camera_param_dict["EDIT_AUTO_WB"]:
+                    tmp_cap.set(
+                        cv2.CAP_PROP_AUTO_WB, camera_param_dict["CAP_PROP_AUTO_WB"]
+                    )
+                if camera_param_dict["EDIT_WB_TEMPERATURE"]:
+                    tmp_cap.set(
+                        cv2.CAP_PROP_WB_TEMPERATURE,
+                        camera_param_dict["CAP_PROP_WB_TEMPERATURE"],
+                    )
                 return True
         return False
 
@@ -165,9 +174,14 @@ class CameraView(MDFloatLayout):
             self.screen.ids["parameter_settings_button"].disabled = False
             self.screen.ids["save_settings_button"].disabled = False
             self.screen.ids["delete_saved_settings_button"].disabled = False
-            Clock.schedule_interval(self.update, 1.0 / float(self.app.confini["settings"]["display_fps"]))
+            Clock.schedule_interval(
+                self.update, 1.0 / float(self.app.confini["settings"]["display_fps"])
+            )
             Clock.schedule_interval(self.update_parameter, 5)
-            Clock.schedule_interval(self._disp_canvas, 1.0 / float(self.app.confini["settings"]["display_fps"]))
+            Clock.schedule_interval(
+                self._disp_canvas,
+                1.0 / float(self.app.confini["settings"]["display_fps"]),
+            )
 
     def _disp_canvas(self, dt):
         if self.texture is not None:
@@ -278,6 +292,8 @@ class CameraView(MDFloatLayout):
                 "CAP_PROP_AUTO_EXPOSURE": self.cap.get(cv2.CAP_PROP_AUTO_EXPOSURE),
                 "CAP_PROP_FOCUS": self.cap.get(cv2.CAP_PROP_FOCUS),
                 "CAP_PROP_AUTOFOCUS": self.cap.get(cv2.CAP_PROP_AUTOFOCUS),
+                "CAP_PROP_AUTO_WB": self.cap.get(cv2.CAP_PROP_AUTO_WB),
+                "CAP_PROP_WB_TEMPERATURE": self.cap.get(cv2.CAP_PROP_WB_TEMPERATURE),
             }
             self.app.camera_parameter_list[self.app.camera_num].update(camera_para)
             self.pt.display_parameter(None)
