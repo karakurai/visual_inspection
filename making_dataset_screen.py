@@ -5,7 +5,6 @@ import pickle
 import webbrowser
 
 import cv2
-from image_processing import ImageProcessing
 from kivy.clock import Clock
 from kivy.graphics import Color, Line, Rectangle
 from kivy.graphics.texture import Texture
@@ -15,6 +14,8 @@ from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.screen import MDScreen
+
+from image_processing import ImageProcessing
 
 
 class MakingDatasetScreen(MDScreen):
@@ -79,7 +80,10 @@ class DatasetImageView(MDFloatLayout):
         self.image_processing = ImageProcessing()
         self.screen = None
         self.pos = (200, 200)
-        self.image_size = (500, 500)
+        self.image_size = (
+            int(self.app.confini["settings"]["image_max_width"]),
+            int(self.app.confini["settings"]["image_max_height"]),
+        )
         self.full_frame = [None] * 5
         self.frame = [None] * 5
         self.frame_list = [None] * 5
@@ -112,7 +116,9 @@ class DatasetImageView(MDFloatLayout):
         ][self.current_image_num]["NAME"]
 
     def start_clock(self):
-        Clock.schedule_interval(self.clock_capture, 1.0 / float(self.app.confini["settings"]["display_fps"]))
+        Clock.schedule_interval(
+            self.clock_capture, 1.0 / float(self.app.confini["settings"]["display_fps"])
+        )
 
     def stop_clock(self):
         Clock.unschedule(self.clock_capture)
@@ -181,6 +187,7 @@ class DatasetImageView(MDFloatLayout):
                         }
                     )
                     if count == self.current_image_num:
+                        tmp_frame = self.app.resize_cv_image(tmp_frame)
                         flip_frame = cv2.flip(tmp_frame, 0)
                         if flip_frame is not None:
                             buf = flip_frame.tobytes()

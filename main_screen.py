@@ -8,8 +8,6 @@ import webbrowser
 from concurrent.futures import ThreadPoolExecutor
 
 import cv2
-from adfi_api import AdfiApi
-from image_processing import ImageProcessing
 from kivy.clock import Clock
 from kivy.graphics import Color, Line, Rectangle
 from kivy.graphics.texture import Texture
@@ -19,6 +17,9 @@ from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.screen import MDScreen
+
+from adfi_api import AdfiApi
+from image_processing import ImageProcessing
 
 
 class MainScreen(MDScreen):
@@ -131,7 +132,10 @@ class MainImageView(MDFloatLayout):
         self.image_processing = ImageProcessing()
         self.screen = None
         self.pos = (300, 270)
-        self.image_size = (500, 500)
+        self.image_size = (
+            int(self.app.confini["settings"]["image_max_width"]),
+            int(self.app.confini["settings"]["image_max_height"]),
+        )
         self.full_frame = [None] * 5
         self.frame = [None] * 5
         self.frame_list = [None] * 5
@@ -170,7 +174,9 @@ class MainImageView(MDFloatLayout):
             ]
 
     def start_clock(self):
-        Clock.schedule_interval(self.clock_capture, 1.0 / float(self.app.confini["settings"]["display_fps"]))
+        Clock.schedule_interval(
+            self.clock_capture, 1.0 / float(self.app.confini["settings"]["display_fps"])
+        )
 
     def stop_clock(self):
         Clock.unschedule(self.clock_capture)
@@ -242,6 +248,7 @@ class MainImageView(MDFloatLayout):
                         }
                     )
                     if i == self.current_image_num:
+                        tmp_frame = self.app.resize_cv_image(tmp_frame)
                         flip_frame = cv2.flip(tmp_frame, 0)
                         if flip_frame is not None:
                             buf = flip_frame.tobytes()
@@ -301,9 +308,7 @@ class MainImageView(MDFloatLayout):
                             )
                             img_count += 1
                         self.processing = 0
-                        with ThreadPoolExecutor(
-                            max_workers=img_count
-                        ) as executor:
+                        with ThreadPoolExecutor(max_workers=img_count) as executor:
                             for j in range(len(settings_list)):
                                 if save_image_path[j] != "":
                                     self.screen.ids[
@@ -337,11 +342,25 @@ class MainImageView(MDFloatLayout):
         time.sleep(index * 0.1)
         if not os.path.exists(self.app.confini["settings"]["result_csv_dir"]):
             os.makedirs(self.app.confini["settings"]["result_csv_dir"])
-        result_csv_path = self.app.confini["settings"]["result_csv_dir"] + "/" + datetime.datetime.now().strftime("%Y%m") + "_result.csv"
+        result_csv_path = (
+            self.app.confini["settings"]["result_csv_dir"]
+            + "/"
+            + datetime.datetime.now().strftime("%Y%m")
+            + "_result.csv"
+        )
         if not os.path.exists(result_csv_path):
             with open(result_csv_path, "w", newline="") as f:
                 writer = csv.writer(f)
-                writer.writerow(["image_name", "result", "time", "anomaly_score", "main_prediction_result", "sub_prediction_result"])
+                writer.writerow(
+                    [
+                        "image_name",
+                        "result",
+                        "time",
+                        "anomaly_score",
+                        "main_prediction_result",
+                        "sub_prediction_result",
+                    ]
+                )
 
         self.processing += 1
         cv2.imwrite(
@@ -385,7 +404,16 @@ class MainImageView(MDFloatLayout):
             if result_json is not None:
                 with open(result_csv_path, "a", newline="") as f:
                     writer = csv.writer(f)
-                    writer.writerow([result_json["image_name"], result_json["result"], result_json["time"], result_json["anomaly_score"], result_json["main_prediction_result"], result_json["sub_prediction_result"]])
+                    writer.writerow(
+                        [
+                            result_json["image_name"],
+                            result_json["result"],
+                            result_json["time"],
+                            result_json["anomaly_score"],
+                            result_json["main_prediction_result"],
+                            result_json["sub_prediction_result"],
+                        ]
+                    )
         self.result_image_path_list[int(index)] = result_image_save_path
         self.processing -= 1
 
@@ -393,10 +421,10 @@ class MainImageView(MDFloatLayout):
         inspection_img_path = self.inspection_image_path_list[int(result_num)]
         if inspection_img_path is not None and os.path.exists(inspection_img_path):
             img = cv2.imread(inspection_img_path)
-            cv2.imshow('Inspection Image ' + str(result_num), img)
+            cv2.imshow("Inspection Image " + str(result_num), img)
             cv2.waitKey(1)
         result_img_path = self.result_image_path_list[int(result_num)]
         if result_img_path is not None and os.path.exists(result_img_path):
             img = cv2.imread(result_img_path)
-            cv2.imshow('Result Image ' + str(result_num), img)
+            cv2.imshow("Result Image " + str(result_num), img)
             cv2.waitKey(1)

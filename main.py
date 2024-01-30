@@ -204,7 +204,7 @@ class InspectionApp(MDApp):
         else:
             self.sm.current = "camera_setting"
 
-    def resize_cv_image(self, cv_image, size_max=(900, 500)):
+    def resize_cv_image(self, cv_image, size_max=(650, 500)):
         if cv_image is not None:
             height = cv_image.shape[0]
             width = cv_image.shape[1]
