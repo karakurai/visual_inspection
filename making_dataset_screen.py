@@ -67,9 +67,9 @@ class MakingDatasetScreen(MDScreen):
         )
 
     def open_ADFI(self):
-        url = "https://adfi.jp/"
+        url = "https://web.us.adfi.karakurai.com/webapp/signin"
         if self.app.lang == "ja":
-            url = "https://adfi.jp/ja/"
+            url = "https://web.us.adfi.karakurai.com/webapp/signin?lang=ja"
         webbrowser.open(url, new=1, autoraise=True)
 
 

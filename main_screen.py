@@ -18,7 +18,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.screen import MDScreen
 
-from adfi_api import AdfiApi
+from adfi_api import AdfiApi, AdfiLocalModelApi
 from image_processing import ImageProcessing
 
 
@@ -28,6 +28,7 @@ class MainScreen(MDScreen):
         self.app = MDApp.get_running_app()
         self.api_list = []
         self.aimodel_list = []
+        self.inspection_model_num = -1
 
     def on_enter(self):
         self.start_screen()
@@ -37,6 +38,11 @@ class MainScreen(MDScreen):
         self.ids["main_image_view"].start_clock()
         self.ids["change_button"].disabled = True
         self.ids["get_image_button"].disabled = True
+        self.ids["get_image_button_0"].disabled = True
+        self.ids["get_image_button_1"].disabled = True
+        self.ids["get_image_button_2"].disabled = True
+        self.ids["get_image_button_3"].disabled = True
+        self.ids["get_image_button_4"].disabled = True
         for i in range(5):
             self.ids["preprocessing_" + str(i)].text = "-"
             self.ids["result_" + str(i)].text = ""
@@ -58,7 +64,10 @@ class MainScreen(MDScreen):
                 ]
                 self.ids["get_image_button"].disabled = False
                 for i in range(api_info_num):
-                    self.ids["preprocessing_" + str(i)].text = self.api_list[i]["NAME"]
+                    self.ids["preprocessing_" + str(i)].text = (
+                        str(i) + ": " + self.api_list[i]["NAME"]
+                    )
+                    self.ids["get_image_button_" + str(i)].disabled = False
                 if api_info_num > 1:
                     self.ids["change_button"].disabled = False
 
@@ -85,31 +94,62 @@ class MainScreen(MDScreen):
         ):
             preprocessing_list = self.app.current_inspection_dict["PREPROCESSING_LIST"]
             for i in range(len(preprocessing_list)):
-                if (
-                    "API_KEY" in preprocessing_list[i]
-                    and "MODEL_ID" in preprocessing_list[i]
-                    and "MODEL_TYPE" in preprocessing_list[i]
-                ):
+                if "LOCAL" in preprocessing_list[i] and preprocessing_list[i]["LOCAL"]:
+                    self.api_list.append(preprocessing_list[i])
+                    adfi_api = AdfiLocalModelApi(
+                        preprocessing_list[i]["MODEL_PATH"],
+                        self.app.confini["settings"]["result_dir_ok"],
+                        self.app.confini["settings"]["result_dir_not_clear"],
+                        self.app.confini["settings"]["result_dir_ng"],
+                    )
                     if (
-                        preprocessing_list[i]["API_KEY"] != ""
-                        and preprocessing_list[i]["MODEL_ID"] != ""
-                        and preprocessing_list[i]["MODEL_TYPE"] != ""
+                        adfi_api.info_dict is not None
+                        and adfi_api.info_dict["available"]
                     ):
-                        self.api_list.append(preprocessing_list[i])
-                        adfi_api = AdfiApi(
-                            preprocessing_list[i]["API_KEY"],
-                            preprocessing_list[i]["MODEL_ID"],
-                            preprocessing_list[i]["MODEL_TYPE"],
-                            self.app.confini["settings"]["adfi_api_url"],
-                            self.app.confini["settings"]["result_dir_ok"],
-                            self.app.confini["settings"]["result_dir_not_clear"],
-                            self.app.confini["settings"]["result_dir_ng"],
-                        )
                         self.aimodel_list.append(adfi_api)
+                    else:
+                        if adfi_api.info_dict is not None:
+                            message = self.app.textini[self.app.lang][
+                                "main_toast_error_message_not_available"
+                            ]
+                            if self.app.lang == "ja":
+                                message = (
+                                    message + " " + adfi_api.info_dict["message_ja"]
+                                )
+                            else:
+                                message = message + " " + adfi_api.info_dict["message"]
+                            toast(message)
+                else:
+                    if (
+                        "API_KEY" in preprocessing_list[i]
+                        and "MODEL_ID" in preprocessing_list[i]
+                        and "MODEL_TYPE" in preprocessing_list[i]
+                    ):
+                        if (
+                            preprocessing_list[i]["API_KEY"] != ""
+                            and preprocessing_list[i]["MODEL_ID"] != ""
+                            and preprocessing_list[i]["MODEL_TYPE"] != ""
+                        ):
+                            self.api_list.append(preprocessing_list[i])
+                            adfi_api = AdfiApi(
+                                preprocessing_list[i]["API_KEY"],
+                                preprocessing_list[i]["MODEL_ID"],
+                                preprocessing_list[i]["MODEL_TYPE"],
+                                self.app.confini["settings"]["adfi_api_url"],
+                                self.app.confini["settings"]["result_dir_ok"],
+                                self.app.confini["settings"]["result_dir_not_clear"],
+                                self.app.confini["settings"]["result_dir_ng"],
+                            )
+                            self.aimodel_list.append(adfi_api)
         return len(self.api_list)
 
     def start_inspection(self):
         self.ids["get_image_button"].disabled = True
+        self.ids["get_image_button_0"].disabled = True
+        self.ids["get_image_button_1"].disabled = True
+        self.ids["get_image_button_2"].disabled = True
+        self.ids["get_image_button_3"].disabled = True
+        self.ids["get_image_button_4"].disabled = True
         self.ids["message"].text = self.app.textini[self.app.lang][
             "main_message_inspection_in_progress"
         ]
@@ -118,6 +158,8 @@ class MainScreen(MDScreen):
 
     def finish_inspection(self):
         self.ids["get_image_button"].disabled = False
+        for i in range(len(self.aimodel_list)):
+            self.ids["get_image_button_" + str(i)].disabled = False
         self.ids["message"].text = self.app.textini[self.app.lang][
             "main_message_run_inspection"
         ]
@@ -310,20 +352,25 @@ class MainImageView(MDFloatLayout):
                         self.processing = 0
                         with ThreadPoolExecutor(max_workers=img_count) as executor:
                             for j in range(len(settings_list)):
-                                if save_image_path[j] != "":
-                                    self.screen.ids[
-                                        "result_" + str(j)
-                                    ].md_bg_color = "yellow"
-                                    executor.submit(
-                                        self.do_inspection(
-                                            j,
-                                            save_image_path[j],
-                                            self.screen.ids["save_results"].active,
-                                            self.screen.ids["save_image"].active,
+                                if (
+                                    self.inspection_model_num == -1
+                                    or self.inspection_model_num == j
+                                ):
+                                    if save_image_path[j] != "":
+                                        self.screen.ids[
+                                            "result_" + str(j)
+                                        ].md_bg_color = "yellow"
+                                        executor.submit(
+                                            self.do_inspection(
+                                                j,
+                                                save_image_path[j],
+                                                self.screen.ids["save_results"].active,
+                                                self.screen.ids["save_image"].active,
+                                            )
                                         )
-                                    )
 
-    def get_images(self):
+    def get_images(self, model_num):
+        self.inspection_model_num = model_num
         self.get_image_flg = True
         if self.screen is None:
             self.screen = self.app.sm.get_screen("main")
@@ -367,54 +414,55 @@ class MainImageView(MDFloatLayout):
             save_image_path,
             self.image_dict[str(index)],
         )
-        result_json, result_image_save_path = self.screen.aimodel_list[
-            index
-        ].inspect_image(save_image_path, result_image_flg)
-        if result_json is None:
-            toast(
-                self.screen.api_list[index]["NAME"]
-                + ": "
-                + self.app.textini[self.app.lang]["main_toast_error_api"]
-            )
-            self.screen.ids["result_" + str(index)].text = self.app.textini[
-                self.app.lang
-            ]["main_result_error"]
-            self.screen.ids["result_" + str(index)].md_bg_color = "black"
-        else:
-            if "Anomaly" in result_json["result"]:
+        if len(self.screen.aimodel_list) > index:
+            result_json, result_image_save_path = self.screen.aimodel_list[
+                index
+            ].inspect_image(save_image_path, result_image_flg)
+            if result_json is None:
+                toast(
+                    self.screen.api_list[index]["NAME"]
+                    + ": "
+                    + self.app.textini[self.app.lang]["main_toast_error_api"]
+                )
                 self.screen.ids["result_" + str(index)].text = self.app.textini[
                     self.app.lang
-                ]["main_result_ng"]
-                self.screen.ids["result_" + str(index)].md_bg_color = "red"
-            elif "Not-clear" in result_json["result"]:
-                self.screen.ids["result_" + str(index)].text = self.app.textini[
-                    self.app.lang
-                ]["main_result_not_clear"]
-                self.screen.ids["result_" + str(index)].md_bg_color = "gray"
+                ]["main_result_error"]
+                self.screen.ids["result_" + str(index)].md_bg_color = "black"
             else:
-                self.screen.ids["result_" + str(index)].text = self.app.textini[
-                    self.app.lang
-                ]["main_result_ok"]
-                self.screen.ids["result_" + str(index)].md_bg_color = "green"
-        if not save_image_flg:
-            os.remove(save_image_path)
-            self.inspection_image_path_list[int(index)] = None
-        else:
-            self.inspection_image_path_list[int(index)] = save_image_path
-            if result_json is not None:
-                with open(result_csv_path, "a", newline="") as f:
-                    writer = csv.writer(f)
-                    writer.writerow(
-                        [
-                            result_json["image_name"],
-                            result_json["result"],
-                            result_json["time"],
-                            result_json["anomaly_score"],
-                            result_json["main_prediction_result"],
-                            result_json["sub_prediction_result"],
-                        ]
-                    )
-        self.result_image_path_list[int(index)] = result_image_save_path
+                if "Anomaly" in result_json["result"]:
+                    self.screen.ids["result_" + str(index)].text = self.app.textini[
+                        self.app.lang
+                    ]["main_result_ng"]
+                    self.screen.ids["result_" + str(index)].md_bg_color = "red"
+                elif "Not-clear" in result_json["result"]:
+                    self.screen.ids["result_" + str(index)].text = self.app.textini[
+                        self.app.lang
+                    ]["main_result_not_clear"]
+                    self.screen.ids["result_" + str(index)].md_bg_color = "gray"
+                else:
+                    self.screen.ids["result_" + str(index)].text = self.app.textini[
+                        self.app.lang
+                    ]["main_result_ok"]
+                    self.screen.ids["result_" + str(index)].md_bg_color = "green"
+            if not save_image_flg:
+                os.remove(save_image_path)
+                self.inspection_image_path_list[int(index)] = None
+            else:
+                self.inspection_image_path_list[int(index)] = save_image_path
+                if result_json is not None:
+                    with open(result_csv_path, "a", newline="") as f:
+                        writer = csv.writer(f)
+                        writer.writerow(
+                            [
+                                result_json["image_name"],
+                                result_json["result"],
+                                result_json["time"],
+                                result_json["anomaly_score"],
+                                result_json["main_prediction_result"],
+                                result_json["sub_prediction_result"],
+                            ]
+                        )
+            self.result_image_path_list[int(index)] = result_image_save_path
         self.processing -= 1
 
     def show_image(self, result_num):

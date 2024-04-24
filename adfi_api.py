@@ -98,3 +98,70 @@ class AdfiApi:
             cv2.imwrite(result_image_save_path, result_image_np)
 
         return result_json, result_image_save_path
+
+
+class AdfiLocalModelApi:
+    model = None
+    info_dict = None
+    model_path = None
+
+    def __init__(self, model_path, ok_dir, not_clear_dir, ng_dir):
+        if os.path.isfile("./adfi_local/adfi.py"):
+            self.model_path = model_path
+            from adfi_local import adfi
+
+            self.model = adfi.AI_Model()
+            self.model.load(self.model_path)
+            self.info_dict = self.model.get_info()
+            print("License expiration date: ", self.info_dict["expiration_date"])
+        current_day = datetime.datetime.now().strftime("%Y%m%d")
+        if ok_dir[-1] != "/":
+            self.ok_dir = ok_dir + "/" + current_day + "/"
+        else:
+            self.ok_dir = ok_dir + current_day + "/"
+        if not_clear_dir[-1] != "/":
+            self.not_clear_dir = not_clear_dir + "/" + current_day + "/"
+        else:
+            self.not_clear_dir = not_clear_dir + current_day + "/"
+        if ng_dir[-1] != "/":
+            self.ng_dir = ng_dir + "/" + current_day + "/"
+        else:
+            self.ng_dir = ng_dir + current_day + "/"
+
+    def inspect_image(self, img_filepath, result_image=True):
+
+        prediction_dict = self.model.predict(
+            img_filepath, get_result_image=result_image
+        )
+
+        result_dict = {
+            "image_name": os.path.basename(img_filepath),
+            "result": str(prediction_dict["result"]),
+            "time": str(datetime.datetime.now()),
+            "anomaly_score": str(prediction_dict["score"]),
+            "main_prediction_result": str(prediction_dict["main"]),
+            "sub_prediction_result": str(prediction_dict["sub"]),
+        }
+
+        result_image_save_path = None
+
+        if result_image:
+            result_image_save_path = os.path.basename(img_filepath)
+
+            if "Anomaly" in prediction_dict["result"]:
+                if not os.path.exists(self.ng_dir):
+                    os.makedirs(self.ng_dir)
+                result_image_save_path = self.ng_dir + result_image_save_path
+            elif "Not-clear" in prediction_dict["result"]:
+                if not os.path.exists(self.not_clear_dir):
+                    os.makedirs(self.not_clear_dir)
+                result_image_save_path = self.not_clear_dir + result_image_save_path
+            else:
+                if not os.path.exists(self.ok_dir):
+                    os.makedirs(self.ok_dir)
+                result_image_save_path = self.ok_dir + result_image_save_path
+
+            # Save the result image
+            prediction_dict["result_image"].save(result_image_save_path)
+
+        return result_dict, result_image_save_path

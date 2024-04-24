@@ -67,7 +67,7 @@
             title: app.textini[app.lang]["label_copyright"]
             icon: "close"
             type: "bottom"
-            mode: "end"        
+            mode: "end"
             on_action_button: app.popup_open()
 
     MainImageView:
@@ -82,8 +82,8 @@
             on_release: main_image_view.change_image()
     MDFloatLayout:
         MDBoxLayout:
-            pos: 600, 100
-            size_hint: .2, .16
+            pos: 600, 180
+            size_hint: .2, .08
             Button:
                 id: get_image_button
                 text_color: "white"
@@ -91,7 +91,72 @@
                 font_size: "22sp"
                 text: app.textini[app.lang]["main_inspect_image"]
                 on_release:
-                    main_image_view.get_images()
+                    main_image_view.get_images(-1)
+    MDFloatLayout:
+        MDBoxLayout:
+            pos: 600, 90
+            size_hint: .035, .06
+            Button:
+                id: get_image_button_0
+                text_color: "white"
+                background_color: "blue"
+                font_size: "16sp"
+                text: "0"
+                disabled: True
+                on_release:
+                    main_image_view.get_images(0)
+    MDFloatLayout:
+        MDBoxLayout:
+            pos: 665, 90
+            size_hint: .035, .06
+            Button:
+                id: get_image_button_1
+                text_color: "white"
+                background_color: "blue"
+                font_size: "16sp"
+                text: "1"
+                disabled: True
+                on_release:
+                    main_image_view.get_images(1)
+    MDFloatLayout:
+        MDBoxLayout:
+            pos: 730, 90
+            size_hint: .035, .06
+            Button:
+                id: get_image_button_2
+                text_color: "white"
+                background_color: "blue"
+                font_size: "16sp"
+                text: "2"
+                disabled: True
+                on_release:
+                    main_image_view.get_images(2)
+    MDFloatLayout:
+        MDBoxLayout:
+            pos: 795, 90
+            size_hint: .035, .06
+            Button:
+                id: get_image_button_3
+                text_color: "white"
+                background_color: "blue"
+                font_size: "16sp"
+                text: "3"
+                disabled: True
+                on_release:
+                    main_image_view.get_images(3)
+    MDFloatLayout:
+        MDBoxLayout:
+            pos: 860, 90
+            size_hint: .035, .06
+            Button:
+                id: get_image_button_4
+                text_color: "white"
+                background_color: "blue"
+                font_size: "16sp"
+                text: "4"
+                disabled: True
+                on_release:
+                    main_image_view.get_images(4)
     MDFloatLayout:
         MDGridLayout:
             pos: 1000, 100

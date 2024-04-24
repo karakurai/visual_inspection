@@ -51,12 +51,27 @@ class AimodelSettingScreen(MDScreen):
                     self.ids["camera_num_" + str(count)].text = str(
                         settings_dict["CAMERA_NUM"]
                     )
-                    if "API_KEY" in settings_dict:
-                        self.ids["api_key_" + str(count)].text = str(
-                            settings_dict["API_KEY"]
-                        )
+                    if "LOCAL" in settings_dict and settings_dict["LOCAL"]:
+                        self.ids["plan_" + str(count)].text = self.app.textini[
+                            self.app.lang
+                        ]["as_local_plan"]
+
+                        if "MODEL_PATH" in settings_dict:
+                            self.ids["api_key_" + str(count)].text = str(
+                                settings_dict["MODEL_PATH"]
+                            )
+                        else:
+                            self.ids["api_key_" + str(count)].text = ""
                     else:
-                        self.ids["api_key_" + str(count)].text = ""
+                        self.ids["plan_" + str(count)].text = self.app.textini[
+                            self.app.lang
+                        ]["as_online_plan"]
+                        if "API_KEY" in settings_dict:
+                            self.ids["api_key_" + str(count)].text = str(
+                                settings_dict["API_KEY"]
+                            )
+                        else:
+                            self.ids["api_key_" + str(count)].text = ""
                     if "MODEL_ID" in settings_dict:
                         self.ids["model_id_" + str(count)].text = str(
                             settings_dict["MODEL_ID"]
@@ -82,6 +97,7 @@ class AimodelSettingScreen(MDScreen):
             self.ids["api_key_" + str(i)].text = ""
             self.ids["model_id_" + str(i)].text = ""
             self.ids["model_type_" + str(i)].text = ""
+            self.ids["plan_" + str(i)].text = ""
 
     def get_checkbox_num(self):
         for i in range(10):
@@ -104,8 +120,29 @@ class AimodelSettingScreen(MDScreen):
             )
             self.save_aimodel_popup.open()
 
+    def show_save_local_aimodel_popup(self):
+        if not os.path.isfile("./adfi_local/adfi.py"):
+            toast(self.app.textini[self.app.lang]["as_toast_message_no_adfi"])
+        else:
+            checkbox_num = self.get_checkbox_num()
+            if checkbox_num < 0:
+                toast(self.app.textini[self.app.lang]["as_toast_message_no_check"])
+            else:
+                self.save_local_aimodel_popup = Popup(
+                    title=self.app.textini[self.app.lang]["adfi_app_name"],
+                    content=SaveLocalAimodelContent(
+                        popup_close=self.save_local_aimodel_popup_close,
+                        save_aimodel=self.save_local_aimodel,
+                    ),
+                    size_hint=(0.6, 0.25),
+                )
+                self.save_local_aimodel_popup.open()
+
     def save_aimodel_popup_close(self):
         self.save_aimodel_popup.dismiss()
+
+    def save_local_aimodel_popup_close(self):
+        self.save_local_aimodel_popup.dismiss()
 
     def save_aimodel(self, api_key, model_id, model_type):
         checkbox_num = self.get_checkbox_num()
@@ -115,7 +152,13 @@ class AimodelSettingScreen(MDScreen):
             if self._validate_aimodel(api_key, model_id, model_type):
                 setting_dict = self.settings_list[int(checkbox_num)]
                 setting_dict.update(
-                    {"API_KEY": api_key, "MODEL_ID": model_id, "MODEL_TYPE": model_type}
+                    {
+                        "API_KEY": api_key,
+                        "MODEL_ID": model_id,
+                        "MODEL_TYPE": model_type,
+                        "LOCAL": False,
+                        "MODEL_PATH": "",
+                    }
                 )
                 self.settings_list[int(checkbox_num)] = setting_dict
                 self.inspection_dict["PREPROCESSING_LIST"] = self.settings_list
@@ -127,6 +170,33 @@ class AimodelSettingScreen(MDScreen):
                     toast(self.app.textini[self.app.lang]["as_toast_message_save"])
                 self.disp_aimodel_list()
                 self.save_aimodel_popup_close()
+
+    def save_local_aimodel(self, model_path):
+        checkbox_num = self.get_checkbox_num()
+        if checkbox_num < 0:
+            toast(self.app.textini[self.app.lang]["as_toast_message_no_check"])
+        else:
+            if self._validate_local_aimodel(model_path):
+                setting_dict = self.settings_list[int(checkbox_num)]
+                setting_dict.update(
+                    {
+                        "MODEL_PATH": model_path,
+                        "LOCAL": True,
+                        "API_KEY": "",
+                        "MODEL_ID": "",
+                        "MODEL_TYPE": "",
+                    }
+                )
+                self.settings_list[int(checkbox_num)] = setting_dict
+                self.inspection_dict["PREPROCESSING_LIST"] = self.settings_list
+                if self.pickle_path is not None:
+                    with open(self.pickle_path, "wb") as f:
+                        pickle.dump(self.inspection_dict, f)
+                    to_dir = "./adfi_client_app_data/inspection_data"
+                    shutil.copy2(self.pickle_path, to_dir)
+                    toast(self.app.textini[self.app.lang]["as_toast_message_save"])
+                self.disp_aimodel_list()
+                self.save_local_aimodel_popup_close()
 
     def _validate_aimodel(self, api_key, model_id, model_type):
         re_compile = re.compile(r"^[a-zA-Z0-9_-]+$")
@@ -153,6 +223,22 @@ class AimodelSettingScreen(MDScreen):
             toast(self.app.textini[self.app.lang]["as_toast_error_message_ascii_type"])
         return flg
 
+    def _validate_local_aimodel(self, model_path):
+        flg = True
+        if model_path == "":
+            return flg
+        if not os.path.isfile(model_path):
+            flg = False
+            toast(
+                self.app.textini[self.app.lang]["as_toast_error_message_no_model_file"]
+            )
+        valid_extensions = ["pca_model", "dml_model", "hr_model"]
+        file_extension = model_path.split(".")[-1]
+        if (file_extension in valid_extensions) is False:
+            flg = False
+            toast(self.app.textini[self.app.lang]["as_toast_error_message_not_model"])
+        return flg
+
 
 class SaveAimodelContent(MDBoxLayout):
     popup_close = ObjectProperty(None)
@@ -171,4 +257,18 @@ class SaveAimodelContent(MDBoxLayout):
         ].text
         self.ids["model_type"].text = self.screen.ids[
             "model_type_" + str(self.check_num)
+        ].text
+
+
+class SaveLocalAimodelContent(MDBoxLayout):
+    popup_close = ObjectProperty(None)
+    save_aimodel = ObjectProperty(None)
+
+    def __init__(self, **kwargs):
+        super(SaveLocalAimodelContent, self).__init__(**kwargs)
+        self.app = MDApp.get_running_app()
+        self.screen = self.app.sm.get_screen("aimodel_setting")
+        self.check_num = self.screen.get_checkbox_num()
+        self.ids["model_path"].text = self.screen.ids[
+            "api_key_" + str(self.check_num)
         ].text
