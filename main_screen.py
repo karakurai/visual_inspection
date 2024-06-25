@@ -3,6 +3,8 @@ import datetime
 import glob
 import os
 import pickle
+import platform
+import subprocess
 import time
 import webbrowser
 from concurrent.futures import ThreadPoolExecutor
@@ -11,10 +13,12 @@ import cv2
 from kivy.clock import Clock
 from kivy.graphics import Color, Line, Rectangle
 from kivy.graphics.texture import Texture
+from kivy.properties import NumericProperty, ObjectProperty
+from kivy.uix.popup import Popup
 from kivymd.app import MDApp
 from kivymd.toast import toast
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFlatButton
-from kivymd.uix.dialog import MDDialog
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.screen import MDScreen
 
@@ -29,6 +33,7 @@ class MainScreen(MDScreen):
         self.api_list = []
         self.aimodel_list = []
         self.inspection_model_num = -1
+        self.popup = None
 
     def on_enter(self):
         self.start_screen()
@@ -165,6 +170,37 @@ class MainScreen(MDScreen):
         ]
         self.ids["message"].text_color = "white"
         self.ids["message"].md_bg_color = "black"
+
+    def show_image_popup(self, image_path, title="Image", result=None):
+        if self.popup is None:
+            new_popup = Popup(
+                title=title,
+                content=PopupImageScreen(dismiss_popup=self.dismiss_popup),
+                size_hint=(0.9, 0.9),
+            )
+            new_popup.content.set_image_path(image_path)
+            new_popup.title = title
+            new_popup.content.ids["result"].opacity = 1
+            if result == "Anomaly":
+                new_popup.content.ids["result"].text = self.app.textini[self.app.lang][
+                    "main_result_ng"
+                ]
+                new_popup.content.ids["result"].md_bg_color = "red"
+            elif result == "Not-clear":
+                new_popup.content.ids["result"].text = self.app.textini[self.app.lang][
+                    "main_result_not_clear"
+                ]
+                new_popup.content.ids["result"].md_bg_color = "gray"
+            else:
+                new_popup.content.ids["result"].opacity = 0
+            self.popup = new_popup
+            self.app.popup_is_open = True
+            self.popup.open()
+
+    def dismiss_popup(self):
+        self.popup.dismiss()
+        self.popup = None
+        self.app.popup_is_open = False
 
 
 class MainImageView(MDFloatLayout):
@@ -434,11 +470,19 @@ class MainImageView(MDFloatLayout):
                         self.app.lang
                     ]["main_result_ng"]
                     self.screen.ids["result_" + str(index)].md_bg_color = "red"
+                    if result_image_save_path is not None:
+                        self.show_result_image(
+                            str(index), result_image_save_path, "Anomaly"
+                        )
                 elif "Not-clear" in result_json["result"]:
                     self.screen.ids["result_" + str(index)].text = self.app.textini[
                         self.app.lang
                     ]["main_result_not_clear"]
                     self.screen.ids["result_" + str(index)].md_bg_color = "gray"
+                    if result_image_save_path is not None:
+                        self.show_result_image(
+                            str(index), result_image_save_path, "Not-clear"
+                        )
                 else:
                     self.screen.ids["result_" + str(index)].text = self.app.textini[
                         self.app.lang
@@ -468,11 +512,40 @@ class MainImageView(MDFloatLayout):
     def show_image(self, result_num):
         inspection_img_path = self.inspection_image_path_list[int(result_num)]
         if inspection_img_path is not None and os.path.exists(inspection_img_path):
-            img = cv2.imread(inspection_img_path)
-            cv2.imshow("Inspection Image " + str(result_num), img)
-            cv2.waitKey(1)
+            open_image(inspection_img_path)
         result_img_path = self.result_image_path_list[int(result_num)]
         if result_img_path is not None and os.path.exists(result_img_path):
-            img = cv2.imread(result_img_path)
-            cv2.imshow("Result Image " + str(result_num), img)
-            cv2.waitKey(1)
+            self.show_result_image(result_num, result_img_path)
+
+    def show_result_image(self, result_num, result_img_path, result=None):
+        if result_img_path is not None and os.path.exists(result_img_path):
+            self.screen.show_image_popup(
+                result_img_path, title="Result Image " + str(result_num), result=result
+            )
+
+
+class PopupImageScreen(MDBoxLayout):
+    dismiss_popup = ObjectProperty(None)
+
+    def set_image_path(self, value):
+        if os.path.exists(value):
+            self.ids.popup_image.source = value
+        else:
+            print(f"Image path does not exist: {value}")
+
+
+def open_image(image_path):
+    try:
+        image_path = os.path.abspath(image_path)
+        if not os.path.exists(image_path):
+            print(f"Image path does not exist: {image_path}")
+            return
+        system = platform.system()
+        if system == "Windows":
+            os.startfile(image_path)
+        elif system == "Darwin":
+            subprocess.call(["open", image_path])
+        else:
+            subprocess.call(["xdg-open", image_path])
+    except Exception as e:
+        print(str(e))

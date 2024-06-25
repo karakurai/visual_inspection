@@ -7,7 +7,7 @@ import cv2
 from kivy.core.text import DEFAULT_FONT, LabelBase
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
+from kivy.properties import BooleanProperty, ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivymd.app import MDApp
@@ -27,9 +27,19 @@ from target_area_screen import TargetAreaScreen
 Window.left = 0
 Window.top = 30
 Window.size = (1600, 900)
-LabelBase.register(
-    DEFAULT_FONT, "./adfi_client_app_data/fonts/BIZUDPGothic-Regular.ttf"
-)
+
+WINDOWS_FONT_PATH_1 = "C:/Windows/Fonts/meiryo.ttc"
+WINDOWS_FONT_PATH_2 = "C:/Windows/Fonts/YuGothM.ttc"
+FONT_PATH = "./adfi_client_app_data/fonts/BIZUDPGothic-Regular.ttf"
+try:
+    if os.path.exists(WINDOWS_FONT_PATH_1):
+        LabelBase.register(DEFAULT_FONT, WINDOWS_FONT_PATH_1)
+    elif os.path.exists(WINDOWS_FONT_PATH_2):
+        LabelBase.register(DEFAULT_FONT, WINDOWS_FONT_PATH_2)
+    elif os.path.exists(FONT_PATH):
+        LabelBase.register(DEFAULT_FONT, FONT_PATH)
+except Exception as e:
+    print(str(e))
 Builder.load_file("./main.kv")
 Builder.load_file("./camera_setting_screen.kv")
 Builder.load_file("./target_area_screen.kv")
@@ -80,6 +90,7 @@ class InspectionApp(MDApp):
     current_ratio2 = [[0.0, 1.0]] * 5
     current_inspection_dict = None
     icon = "adfi_client_app_data/logo/logo.png"
+    popup_is_open = BooleanProperty(False)
 
     def build(self):
         self.theme_cls.theme_style = "Dark"
@@ -100,7 +111,54 @@ class InspectionApp(MDApp):
             + ")"
         )
         Window.bind(on_request_close=self.popup_open)
+        Window.bind(on_key_down=self.on_key_down)
         return self.sm
+
+    def on_key_down(self, window, keycode, scancode, codepoint, modifier):
+        return_flag = True
+        if self.sm.current == "main":
+            screen = self.sm.current_screen
+            if self.popup_is_open:
+                if (
+                    codepoint == "a"
+                    or codepoint == "0"
+                    or codepoint == "1"
+                    or codepoint == "2"
+                    or codepoint == "3"
+                    or codepoint == "4"
+                ):
+                    screen.dismiss_popup()
+                elif keycode == 13:
+                    screen.dismiss_popup()
+                else:
+                    return_flag = False
+            else:
+                if codepoint == "a":
+                    screen.ids["main_image_view"].get_images(-1)
+                elif codepoint == "0":
+                    screen.ids["main_image_view"].get_images(0)
+                elif codepoint == "1":
+                    screen.ids["main_image_view"].get_images(1)
+                elif codepoint == "2":
+                    screen.ids["main_image_view"].get_images(2)
+                elif codepoint == "3":
+                    screen.ids["main_image_view"].get_images(3)
+                elif codepoint == "4":
+                    screen.ids["main_image_view"].get_images(4)
+                elif keycode == 13:
+                    screen.ids["main_image_view"].get_images(-1)
+                else:
+                    return_flag = False
+
+        elif self.sm.current == "making_dataset":
+            screen = self.sm.current_screen
+            if codepoint == "a":
+                screen.ids["dataset_image_view"].save_images(0)
+            elif codepoint == "b":
+                screen.ids["dataset_image_view"].save_images(1)
+        else:
+            return_flag = False
+        return return_flag
 
     def get_cameras(self):
         self.camera_count = 0

@@ -187,7 +187,7 @@
                 font_size: "14sp"
             MDSwitch:
                 id: save_results
-                active: False
+                active: True
                 disabled: False
     MDFloatLayout:
         MDGridLayout:
@@ -255,3 +255,35 @@
             md_bg_color: "black"
             font_size: "18sp"
             text: app.textini[app.lang]["main_massage_no_inspection"]
+
+<PopupImageScreen>
+    id: popup_image_screen
+    orientation: 'vertical'
+    MDBoxLayout:
+        size_hint: 1, .1
+        MDRaisedButton:
+            id: result
+            text_color: "white"
+            md_bg_color: "black"
+            font_size: "24sp"
+        MDLabel:
+            id: popup_title
+            size_hint: .8, .1
+            halign: "center"
+            adaptive_height: True
+            text: app.textini[app.lang]["main_result_image_title"]
+    MDLabel:
+        size_hint: 1, .05
+        text: ""
+    MDBoxLayout:
+        size_hint: 1, .75
+        Image:
+            id: popup_image
+            size: 800, 800
+            allow_stretch: True
+            keep_ratio: True
+    MDBoxLayout:
+        size_hint: 1, .1
+        MDFillRoundFlatButton:
+            text: app.textini[app.lang]["ok_a"]
+            on_release: root.dismiss_popup()
