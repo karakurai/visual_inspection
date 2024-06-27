@@ -63,6 +63,11 @@ Result images and result CSV are saved in the following directory.
 result
 ```
 
+If you want to run an AI model in a local environment, place the module downloaded from ADFI in the following directory.
+```
+adfi_local
+```
+
 # To Software Developers
 This software is MIT licensed, so you can use it commercially.  
 You may also modify the source code and provide it to your customers.
@@ -76,6 +81,11 @@ adfi_client_app_data/logo/logo.png
 You can change the copyright by modifying the value of "label_copyright" in the file below.
 ```
 text.ini
+```
+
+If you want to run an AI model in a local environment, place the module downloaded from ADFI in the following directory.
+```
+adfi_local
 ```
 
 # 画像検査アプリケーション
@@ -145,6 +155,11 @@ inspection_image
 result
 ```
 
+ローカル環境でAIモデルを実行する場合は、ADFIからダウンロードしたモジュールを下記ディレクトリに配置してください。
+```
+adfi_local
+```
+
 # ソフトウェア開発企業向け情報
 このソフトウェアはMITライセンスのため、商用利用が可能です。  
 ソースコードを修正して、顧客に提供することができます。
@@ -158,4 +173,9 @@ adfi_client_app_data/logo/logo.png
 下記ファイルの「label_copyright」の値を修正することで、著作権表示を変更することができます。
 ```
 text.ini
+```
+
+ローカル環境でAIモデルを実行する場合は、ADFIからダウンロードしたモジュールを下記ディレクトリに配置してください。
+```
+adfi_local
 ```
