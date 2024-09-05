@@ -90,6 +90,7 @@
                 background_color: "blue"
                 font_size: "22sp"
                 text: app.textini[app.lang]["main_inspect_image"]
+                disabled: True
                 on_release:
                     main_image_view.get_images(-1)
     MDFloatLayout:
@@ -194,13 +195,22 @@
             pos: 1000, 500
             size_hint: .4, .3
             rows: 6
-            cols: 2
+            cols: 3
             MDLabel:
                 text: app.textini[app.lang]["main_inspected_image"]
                 font_size: "14sp"
+                size_hint_x: None
+                width: 270
             MDLabel:
                 text: app.textini[app.lang]["main_result"]
                 font_size: "14sp"
+                size_hint_x: None
+                width: 110
+            MDLabel:
+                id : text_save_train_image
+                text: app.textini[app.lang]["main_save_train_image"]
+                font_size: "14sp"
+                opacity: 0
             MDLabel:
                 id: preprocessing_0
                 font_size: "14sp"
@@ -210,6 +220,15 @@
                 md_bg_color: "black"
                 font_size: "14sp"
                 on_release: main_image_view.show_image(0)
+            MDRaisedButton:
+                id: save_0
+                text: app.textini[app.lang]["main_save"]
+                text_color: "white"
+                md_bg_color: "black"
+                font_size: "14sp"
+                on_release: main_image_view.show_save_image(0)
+                disabled: True
+                opacity: 0
             MDLabel:
                 id: preprocessing_1
                 font_size: "14sp"
@@ -219,6 +238,15 @@
                 md_bg_color: "black"
                 font_size: "14sp"
                 on_release: main_image_view.show_image(1)
+            MDRaisedButton:
+                id: save_1
+                text: app.textini[app.lang]["main_save"]
+                text_color: "white"
+                md_bg_color: "black"
+                font_size: "14sp"
+                on_release: main_image_view.show_save_image(1)
+                disabled: True
+                opacity: 0
             MDLabel:
                 id: preprocessing_2
                 font_size: "14sp"
@@ -228,6 +256,15 @@
                 md_bg_color: "black"
                 font_size: "14sp"
                 on_release: main_image_view.show_image(2)
+            MDRaisedButton:
+                id: save_2
+                text: app.textini[app.lang]["main_save"]
+                text_color: "white"
+                md_bg_color: "black"
+                font_size: "14sp"
+                on_release: main_image_view.show_save_image(2)
+                disabled: True
+                opacity: 0
             MDLabel:
                 id: preprocessing_3
                 font_size: "14sp"
@@ -237,6 +274,15 @@
                 md_bg_color: "black"
                 font_size: "14sp"
                 on_release: main_image_view.show_image(3)
+            MDRaisedButton:
+                id: save_3
+                text: app.textini[app.lang]["main_save"]
+                text_color: "white"
+                md_bg_color: "black"
+                font_size: "14sp"
+                on_release: main_image_view.show_save_image(3)
+                disabled: True
+                opacity: 0
             MDLabel:
                 id: preprocessing_4
                 font_size: "14sp"
@@ -246,6 +292,15 @@
                 md_bg_color: "black"
                 font_size: "14sp"
                 on_release: main_image_view.show_image(4)
+            MDRaisedButton:
+                id: save_4
+                text: app.textini[app.lang]["main_save"]
+                text_color: "white"
+                md_bg_color: "black"
+                font_size: "14sp"
+                on_release: main_image_view.show_save_image(4)
+                disabled: True
+                opacity: 0
     MDFloatLayout:
         MDRaisedButton:
             id: message
@@ -254,7 +309,7 @@
             text_color: "white"
             md_bg_color: "black"
             font_size: "18sp"
-            text: app.textini[app.lang]["main_massage_no_inspection"]
+            text: app.textini[app.lang]["main_massage_loading_camera"]
 
 <PopupImageScreen>
     id: popup_image_screen
@@ -286,4 +341,52 @@
         size_hint: 1, .1
         MDFillRoundFlatButton:
             text: app.textini[app.lang]["ok_a"]
+            on_release: root.dismiss_popup()
+
+<PopupSaveImageScreen>
+    id: popup_save_image_screen
+    orientation: 'vertical'
+    MDBoxLayout:
+        size_hint: 1, .05
+        MDLabel:
+            id: popup_save_title
+            size_hint: .8, .1
+            halign: "center"
+            adaptive_height: True
+            text: app.textini[app.lang]["main_save_image_title"]
+    MDBoxLayout:
+        size_hint: 1, .05
+        MDLabel:
+            id: popup_save_dir_path
+            size_hint: .8, .1
+            halign: "center"
+            adaptive_height: True
+    MDLabel:
+        size_hint: 1, .05
+        text: ""
+    MDBoxLayout:
+        size_hint: 1, .75
+        Image:
+            id: popup_save_image
+            size: 800, 800
+            allow_stretch: True
+            keep_ratio: True
+    MDBoxLayout:
+        size_hint: 1, .1
+        MDRaisedButton:
+            id: normal
+            text: app.textini[app.lang]["main_save_normal"]
+            text_color: "white"
+            md_bg_color: "blue"
+            on_release: root.save_image(0)
+        MDRaisedButton:
+            id: anomaly
+            text: app.textini[app.lang]["main_save_anomaly"]
+            text_color: "white"
+            md_bg_color: "red"
+            on_release: root.save_image(1)
+        MDLabel:
+            text: ""
+        MDFillRoundFlatButton:
+            text: app.textini[app.lang]["main_save_cancel"]
             on_release: root.dismiss_popup()

@@ -267,7 +267,7 @@ class ImageView(MDFloatLayout):
             ret_flg = False
         return ret_flg
 
-    def _change_coord_to_ratio(self, coordinate, texture_size, digit=3):
+    def _change_coord_to_ratio(self, coordinate, texture_size, digit=2):
         width_ratio = round(int(coordinate[0]) / int(texture_size[0]), digit)
         height_ratio = round(int(coordinate[1]) / int(texture_size[1]), digit)
         return [width_ratio, height_ratio]

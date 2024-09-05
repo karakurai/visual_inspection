@@ -238,13 +238,14 @@ class DatasetImageView(MDFloatLayout):
         return image_count
 
     def save_images(self, class_label=0):
-        current_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M_%S")
         if self.app.current_inspection_dict is not None:
             dataset_dir = self.app.confini["settings"]["dataset_dir"]
             if not os.path.exists(dataset_dir):
                 os.makedirs(dataset_dir)
             if any(self.image_dict):
                 for key, value in self.image_dict.items():
+                    filename = str(current_time) + ".png"
                     if class_label == 0:
                         save_dataset_dir = (
                             dataset_dir
@@ -253,6 +254,7 @@ class DatasetImageView(MDFloatLayout):
                             + "_Normal_"
                             + key
                         )
+                        filename = "Normal_" + filename
                     else:
                         save_dataset_dir = (
                             dataset_dir
@@ -261,11 +263,10 @@ class DatasetImageView(MDFloatLayout):
                             + "_Anomaly_"
                             + key
                         )
+                        filename = "Anomaly_" + filename
                     if not os.path.exists(save_dataset_dir):
                         os.makedirs(save_dataset_dir)
-                    save_image_path = (
-                        save_dataset_dir + "/" + str(current_time) + ".png"
-                    )
+                    save_image_path = save_dataset_dir + "/" + filename
                     cv2.imwrite(
                         save_image_path,
                         value,

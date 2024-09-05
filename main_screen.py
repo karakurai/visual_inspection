@@ -75,14 +75,33 @@ class MainScreen(MDScreen):
                     self.ids["get_image_button_" + str(i)].disabled = False
                 if api_info_num > 1:
                     self.ids["change_button"].disabled = False
+        else:
+            self.ids["message"].text = self.app.textini[self.app.lang][
+                "main_massage_no_inspection"
+            ]
+            self.ids["message"].text_color = "white"
+            self.ids["message"].md_bg_color = "black"
 
     def leave_screen(self):
         self.ids["main_image_view"].stop_clock()
         self.ids["main_image_view"].clear()
         self.app.release_cameras()
         self.ids["message"].text = self.app.textini[self.app.lang][
-            "main_massage_no_inspection"
+            "main_massage_loading_camera"
         ]
+        self.ids["message"].text_color = "white"
+        self.ids["message"].md_bg_color = "black"
+        self.ids["get_image_button"].disabled = True
+        self.ids["get_image_button_0"].disabled = True
+        self.ids["get_image_button_1"].disabled = True
+        self.ids["get_image_button_2"].disabled = True
+        self.ids["get_image_button_3"].disabled = True
+        self.ids["get_image_button_4"].disabled = True
+        self.ids["save_0"].disabled = True
+        self.ids["save_1"].disabled = True
+        self.ids["save_2"].disabled = True
+        self.ids["save_3"].disabled = True
+        self.ids["save_4"].disabled = True
         self.api_list = []
         self.aimodel_list = []
         for i in range(5):
@@ -193,6 +212,22 @@ class MainScreen(MDScreen):
                 new_popup.content.ids["result"].md_bg_color = "gray"
             else:
                 new_popup.content.ids["result"].opacity = 0
+            self.popup = new_popup
+            self.app.popup_is_open = True
+            self.popup.open()
+
+    def show_save_image_popup(self, image_path, index):
+        if self.popup is None:
+            title = "Save Image " + str(index) + ":" + self.api_list[int(index)]["NAME"]
+            new_popup = Popup(
+                title=title,
+                content=PopupSaveImageScreen(dismiss_popup=self.dismiss_popup),
+                size_hint=(0.9, 0.9),
+            )
+            new_popup.content.set_image_path_and_name(
+                image_path, self.api_list[int(index)]["NAME"]
+            )
+            new_popup.title = title
             self.popup = new_popup
             self.app.popup_is_open = True
             self.popup.open()
@@ -491,8 +526,14 @@ class MainImageView(MDFloatLayout):
             if not save_image_flg:
                 os.remove(save_image_path)
                 self.inspection_image_path_list[int(index)] = None
+                self.screen.ids["text_save_train_image"].opacity = 0
+                self.screen.ids["save_" + str(index)].opacity = 0
+                self.screen.ids["save_" + str(index)].disabled = True
             else:
                 self.inspection_image_path_list[int(index)] = save_image_path
+                self.screen.ids["text_save_train_image"].opacity = 1
+                self.screen.ids["save_" + str(index)].opacity = 1
+                self.screen.ids["save_" + str(index)].disabled = False
                 if result_json is not None:
                     with open(result_csv_path, "a", newline="") as f:
                         writer = csv.writer(f)
@@ -523,6 +564,14 @@ class MainImageView(MDFloatLayout):
                 result_img_path, title="Result Image " + str(result_num), result=result
             )
 
+    def show_save_image(self, result_num):
+        inspection_img_path = self.inspection_image_path_list[int(result_num)]
+        if inspection_img_path is not None and os.path.exists(inspection_img_path):
+            self.screen.show_save_image_popup(
+                inspection_img_path,
+                result_num,
+            )
+
 
 class PopupImageScreen(MDBoxLayout):
     dismiss_popup = ObjectProperty(None)
@@ -532,6 +581,54 @@ class PopupImageScreen(MDBoxLayout):
             self.ids.popup_image.source = value
         else:
             print(f"Image path does not exist: {value}")
+
+
+class PopupSaveImageScreen(MDBoxLayout):
+    dismiss_popup = ObjectProperty(None)
+    original_image = None
+    aimodel_name = None
+
+    def __init__(self, **kwargs):
+        super(PopupSaveImageScreen, self).__init__(**kwargs)
+        self.app = MDApp.get_running_app()
+
+    def set_image_path_and_name(self, value, name):
+        if os.path.exists(value):
+            self.ids.popup_save_image.source = value
+            self.original_image = cv2.imread(value)
+            self.aimodel_name = name
+            self.ids.popup_save_dir_path.text = os.path.abspath(
+                self.app.confini["settings"]["dataset_dir"]
+            )
+        else:
+            print(f"Image path does not exist: {value}")
+
+    def save_image(self, class_label=0):
+        current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M_%S")
+        if self.original_image is not None and self.aimodel_name is not None:
+            dataset_dir = self.app.confini["settings"]["dataset_dir"]
+            if not os.path.exists(dataset_dir):
+                os.makedirs(dataset_dir)
+            filename = str(current_time) + ".png"
+            if class_label == 0:
+                save_dataset_dir = (
+                    dataset_dir + "/Inspection_" + self.aimodel_name + "_Normal"
+                )
+                filename = "Normal_" + filename
+            else:
+                save_dataset_dir = (
+                    dataset_dir + "/Inspection_" + self.aimodel_name + "_Anomaly"
+                )
+                filename = "Anomaly_" + filename
+            if not os.path.exists(save_dataset_dir):
+                os.makedirs(save_dataset_dir)
+            save_image_path = save_dataset_dir + "/" + filename
+            cv2.imwrite(
+                save_image_path,
+                self.original_image,
+            )
+            toast(self.app.textini[self.app.lang]["main_toast_save_image"])
+        self.dismiss_popup()
 
 
 def open_image(image_path):
