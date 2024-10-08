@@ -196,7 +196,7 @@ class ImageProcessing:
         list_len = len(img_list)
         img = None
         if flg != "True" or list_len == 1:
-            img = img_list[0]
+            img = img_list[-1]
         elif list_len > 1:
             img = np.zeros(img_list[0].shape, dtype="float16")
             for tmp_img in img_list:
