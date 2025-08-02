@@ -3,10 +3,15 @@ opencv-python==4.5.3.56
 Pillow==9.5.0
 kivy==2.1.0
 kivymd==1.1.1
-# The following are used only when running AI in the local environment.
+# The following are used only when running Anomaly Detetion AI in the local environment.
 scikit-learn==1.3.1
 cryptography==37.0.4
 torch==2.1.0
 torchvision==0.16.0
 onnx==1.16.1
 onnxruntime==1.18.0
+# The following are used only when running Image Recognition AI in the local environment.
+ftfy==6.3.1
+regex==2025.7.31
+tqdm==4.67.1
+requests

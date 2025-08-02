@@ -1,8 +1,8 @@
 The Japanese ReadMe is described in the second half. (後半に[日本語のReadMe](#画像検査アプリケーション)を記載)
 
 # Visual Inspection Application
-This application can easily automate visual inspections and foreign matter inspections in factories.  
-All you have to do is prepare an inexpensive web camera and a PC (no GPU required) and you can start inspection immediately.  
+This application can easily automate visual inspections and foreign matter inspections in factories.
+All you have to do is prepare an inexpensive web camera and a PC (no GPU required) and you can start inspection immediately.
 Because MIT license, you can use it for commercial purposes and modify the source code.
 
 The following images are application screens and a camera installation example.
@@ -37,12 +37,12 @@ python main.py
 If the layout of the application is broken, [set the display scaling (display settings in your OS) to 100%.](https://support.microsoft.com/en-us/windows/1d5830c3-eee3-8eaa-836b-abcc37d99b9a)
 
 # User manual
-The user manual can be downloaded below.  
+The user manual can be downloaded below.
 [User Manual](https://adfi.jp/wp-content/uploads/User_manual.pdf)
 
 
 # To Manufacturing Companies
-By modifying the file below, you can change the initial values of the application, such as camera FPS and resolution.  
+By modifying the file below, you can change the initial values of the application, such as camera FPS and resolution.
 However, if the camera cannot be change the settings, the value will not be reflected.
 ```
 conf.ini
@@ -69,7 +69,7 @@ adfi_local
 ```
 
 # To Software Developers
-This software is MIT licensed, so you can use it commercially.  
+This software is MIT licensed, so you can use it commercially.
 You may also modify the source code and provide it to your customers.
 
 You can change the logo of the application by replacing the image file below.
@@ -83,14 +83,19 @@ You can change the copyright by modifying the value of "label_copyright" in the 
 text.ini
 ```
 
-If you want to run an AI model in a local environment, place the module downloaded from ADFI in the following directory.
+If you want to run an AI model of Anomaly Detection in a local environment, place the module downloaded from ADFI Anomaly Detection in the following directory.
 ```
 adfi_local
 ```
 
+If you want to run an AI model of Image Recognition in a local environment, place the module downloaded from ADFI  Image Recognition in the following directory.
+```
+adfi_vit_local
+```
+
 # 画像検査アプリケーション
-工場での外観検査や異物検査を簡単に自動化できるアプリケーションです。表示言語は英語と日本語を選択できます。  
-安価なWEBカメラとPC（GPU不要）を用意するだけで、すぐに検査を開始できます。  
+工場での外観検査や異物検査を簡単に自動化できるアプリケーションです。表示言語は英語と日本語を選択できます。
+安価なWEBカメラとPC（GPU不要）を用意するだけで、すぐに検査を開始できます。
 MITライセンスのため、商用利用やソースコードの改変が可能です。
 
 ## アプリケーションの特徴
@@ -105,8 +110,8 @@ MITライセンスのため、商用利用やソースコードの改変が可�
 ka
 # 開始手順
 ## WindowsPC用の簡単セットアップ手順
-WindowsPCの場合は簡単にセットアップできる便利ツールを用意しています。  
-[こちら](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/ReadMe_ja.md)のページの手順をご参照ください。  
+WindowsPCの場合は簡単にセットアップできる便利ツールを用意しています。
+[こちら](https://github.com/karakurai/visual_inspection/blob/main/setup_on_windows_ja/ReadMe_ja.md)のページの手順をご参照ください。
 
 WindowsPC以外の場合（通常のセットアップ方法）は以降の手順に従って実施してください。
 
@@ -130,11 +135,11 @@ python main.py
 アプリケーションのレイアウトが崩れていた場合、[OSのディスプレイ設定の拡大率を100%に設定してください。](https://support.microsoft.com/ja-jp/windows/1d5830c3-eee3-8eaa-836b-abcc37d99b9a)
 
 # 操作マニュアル
-下記から操作マニュアルをダウンロードできます。  
+下記から操作マニュアルをダウンロードできます。
 [操作マニュアル](https://adfi.jp/wp-content/uploads/操作マニュアル.pdf)
 
 # 製造業向け情報
-下記ファイルを修正することで、カメラのFPSや解像度など、アプリケーションの初期値を変更できます。  
+下記ファイルを修正することで、カメラのFPSや解像度など、アプリケーションの初期値を変更できます。
 ただし、設定変更できないカメラの場合、値は反映されません。
 ```
 conf.ini
@@ -155,13 +160,18 @@ inspection_image
 result
 ```
 
-ローカル環境でAIモデルを実行する場合は、ADFIからダウンロードしたモジュールを下記ディレクトリに配置してください。
+ローカル環境で異常検知のAIモデルを実行する場合は、ADFI異常検知からダウンロードしたモジュールを下記ディレクトリに配置してください。
 ```
 adfi_local
 ```
 
+ローカル環境で画像認識のAIモデルを実行する場合は、ADFI画像認識からダウンロードしたモジュールを下記ディレクトリに配置してください。
+```
+adfi_vit_local
+```
+
 # ソフトウェア開発企業向け情報
-このソフトウェアはMITライセンスのため、商用利用が可能です。  
+このソフトウェアはMITライセンスのため、商用利用が可能です。
 ソースコードを修正して、顧客に提供することができます。
 
 下記画像ファイルを差し替えることで、アプリケーションのロゴを変更することができます。
@@ -175,7 +185,12 @@ adfi_client_app_data/logo/logo.png
 text.ini
 ```
 
-ローカル環境でAIモデルを実行する場合は、ADFIからダウンロードしたモジュールを下記ディレクトリに配置してください。
+ローカル環境で異常検知のAIモデルを実行する場合は、ADFI異常検知からダウンロードしたモジュールを下記ディレクトリに配置してください。
 ```
 adfi_local
+```
+
+ローカル環境で画像認識のAIモデルを実行する場合は、ADFI画像認識からダウンロードしたモジュールを下記ディレクトリに配置してください。
+```
+adfi_vit_local
 ```

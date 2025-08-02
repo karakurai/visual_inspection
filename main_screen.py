@@ -122,9 +122,7 @@ class MainScreen(MDScreen):
                     self.api_list.append(preprocessing_list[i])
                     adfi_api = AdfiLocalModelApi(
                         preprocessing_list[i]["MODEL_PATH"],
-                        self.app.confini["settings"]["result_dir_ok"],
-                        self.app.confini["settings"]["result_dir_not_clear"],
-                        self.app.confini["settings"]["result_dir_ng"],
+                        self.app.confini["settings"],
                     )
                     if (
                         adfi_api.info_dict is not None
@@ -466,19 +464,12 @@ class MainImageView(MDFloatLayout):
             + datetime.datetime.now().strftime("%Y%m")
             + "_result.csv"
         )
-        if not os.path.exists(result_csv_path):
-            with open(result_csv_path, "w", newline="") as f:
-                writer = csv.writer(f)
-                writer.writerow(
-                    [
-                        "image_name",
-                        "result",
-                        "time",
-                        "anomaly_score",
-                        "main_prediction_result",
-                        "sub_prediction_result",
-                    ]
-                )
+        result_vit_csv_path = (
+            self.app.confini["settings"]["result_csv_dir"]
+            + "/"
+            + datetime.datetime.now().strftime("%Y%m")
+            + "_vit_result.csv"
+        )
 
         self.processing += 1
         cv2.imwrite(
@@ -500,29 +491,34 @@ class MainImageView(MDFloatLayout):
                 ]["main_result_error"]
                 self.screen.ids["result_" + str(index)].md_bg_color = "black"
             else:
-                if "Anomaly" in result_json["result"]:
-                    self.screen.ids["result_" + str(index)].text = self.app.textini[
-                        self.app.lang
-                    ]["main_result_ng"]
-                    self.screen.ids["result_" + str(index)].md_bg_color = "red"
-                    if result_image_save_path is not None:
-                        self.show_result_image(
-                            str(index), result_image_save_path, "Anomaly"
-                        )
-                elif "Not-clear" in result_json["result"]:
-                    self.screen.ids["result_" + str(index)].text = self.app.textini[
-                        self.app.lang
-                    ]["main_result_not_clear"]
-                    self.screen.ids["result_" + str(index)].md_bg_color = "gray"
-                    if result_image_save_path is not None:
-                        self.show_result_image(
-                            str(index), result_image_save_path, "Not-clear"
-                        )
-                else:
-                    self.screen.ids["result_" + str(index)].text = self.app.textini[
-                        self.app.lang
-                    ]["main_result_ok"]
+                if result_json["vit"]:
+                    self.screen.ids["result_" + str(index)].text = result_json["result"]
                     self.screen.ids["result_" + str(index)].md_bg_color = "green"
+                else:
+                    if "Anomaly" in result_json["result"]:
+                        self.screen.ids["result_" + str(index)].text = self.app.textini[
+                            self.app.lang
+                        ]["main_result_ng"]
+                        self.screen.ids["result_" + str(index)].md_bg_color = "red"
+                        if result_image_save_path is not None:
+                            self.show_result_image(
+                                str(index), result_image_save_path, "Anomaly"
+                            )
+                    elif "Not-clear" in result_json["result"]:
+                        self.screen.ids["result_" + str(index)].text = self.app.textini[
+                            self.app.lang
+                        ]["main_result_not_clear"]
+                        self.screen.ids["result_" + str(index)].md_bg_color = "gray"
+                        if result_image_save_path is not None:
+                            self.show_result_image(
+                                str(index), result_image_save_path, "Not-clear"
+                            )
+                    else:
+                        self.screen.ids["result_" + str(index)].text = self.app.textini[
+                            self.app.lang
+                        ]["main_result_ok"]
+                        self.screen.ids["result_" + str(index)].md_bg_color = "green"
+
             if not save_image_flg:
                 os.remove(save_image_path)
                 self.inspection_image_path_list[int(index)] = None
@@ -535,18 +531,53 @@ class MainImageView(MDFloatLayout):
                 self.screen.ids["save_" + str(index)].opacity = 1
                 self.screen.ids["save_" + str(index)].disabled = False
                 if result_json is not None:
-                    with open(result_csv_path, "a", newline="") as f:
-                        writer = csv.writer(f)
-                        writer.writerow(
-                            [
-                                result_json["image_name"],
-                                result_json["result"],
-                                result_json["time"],
-                                result_json["anomaly_score"],
-                                result_json["main_prediction_result"],
-                                result_json["sub_prediction_result"],
-                            ]
-                        )
+                    if result_json["vit"]:
+                        if not os.path.exists(result_vit_csv_path):
+                            row = ["image_name", "result", "time", "score", "class"]
+                            for cotegory in result_json["category_list"]:
+                                row.append(cotegory)
+
+                            with open(result_vit_csv_path, "w", newline="") as f:
+                                writer = csv.writer(f)
+                                writer.writerow(row)
+                        row_list = [
+                            result_json["image_name"],
+                            result_json["result"],
+                            result_json["time"],
+                            result_json["score"],
+                            result_json["class"],
+                        ]
+                        for score in result_json["score_list"]:
+                            row_list.append(score)
+                        with open(result_vit_csv_path, "a", newline="") as f:
+                            writer = csv.writer(f)
+                            writer.writerow(row_list)
+                    else:
+                        if not os.path.exists(result_csv_path):
+                            with open(result_csv_path, "w", newline="") as f:
+                                writer = csv.writer(f)
+                                writer.writerow(
+                                    [
+                                        "image_name",
+                                        "result",
+                                        "time",
+                                        "anomaly_score",
+                                        "main_prediction_result",
+                                        "sub_prediction_result",
+                                    ]
+                                )
+                        with open(result_csv_path, "a", newline="") as f:
+                            writer = csv.writer(f)
+                            writer.writerow(
+                                [
+                                    result_json["image_name"],
+                                    result_json["result"],
+                                    result_json["time"],
+                                    result_json["anomaly_score"],
+                                    result_json["main_prediction_result"],
+                                    result_json["sub_prediction_result"],
+                                ]
+                            )
             self.result_image_path_list[int(index)] = result_image_save_path
         self.processing -= 1
 

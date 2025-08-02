@@ -121,22 +121,19 @@ class AimodelSettingScreen(MDScreen):
             self.save_aimodel_popup.open()
 
     def show_save_local_aimodel_popup(self):
-        if not os.path.isfile("./adfi_local/adfi.py"):
-            toast(self.app.textini[self.app.lang]["as_toast_message_no_adfi"])
+        checkbox_num = self.get_checkbox_num()
+        if checkbox_num < 0:
+            toast(self.app.textini[self.app.lang]["as_toast_message_no_check"])
         else:
-            checkbox_num = self.get_checkbox_num()
-            if checkbox_num < 0:
-                toast(self.app.textini[self.app.lang]["as_toast_message_no_check"])
-            else:
-                self.save_local_aimodel_popup = Popup(
-                    title=self.app.textini[self.app.lang]["adfi_app_name"],
-                    content=SaveLocalAimodelContent(
-                        popup_close=self.save_local_aimodel_popup_close,
-                        save_aimodel=self.save_local_aimodel,
-                    ),
-                    size_hint=(0.6, 0.25),
-                )
-                self.save_local_aimodel_popup.open()
+            self.save_local_aimodel_popup = Popup(
+                title=self.app.textini[self.app.lang]["adfi_app_name"],
+                content=SaveLocalAimodelContent(
+                    popup_close=self.save_local_aimodel_popup_close,
+                    save_aimodel=self.save_local_aimodel,
+                ),
+                size_hint=(0.6, 0.25),
+            )
+            self.save_local_aimodel_popup.open()
 
     def save_aimodel_popup_close(self):
         self.save_aimodel_popup.dismiss()
@@ -232,11 +229,19 @@ class AimodelSettingScreen(MDScreen):
             toast(
                 self.app.textini[self.app.lang]["as_toast_error_message_no_model_file"]
             )
-        valid_extensions = ["pca_model", "dml_model", "hr_model"]
+        valid_extensions = ["pca_model", "dml_model", "hr_model", "vit_model"]
         file_extension = model_path.split(".")[-1]
         if (file_extension in valid_extensions) is False:
             flg = False
             toast(self.app.textini[self.app.lang]["as_toast_error_message_not_model"])
+        if file_extension == "vit_model":
+            if not os.path.isfile("./adfi_vit_local/adfi_vit.py"):
+                flg = False
+                toast(self.app.textini[self.app.lang]["as_toast_message_no_adfi_vit"])
+        else:
+            if not os.path.isfile("./adfi_local/adfi.py"):
+                flg = False
+                toast(self.app.textini[self.app.lang]["as_toast_message_no_adfi"])
         return flg
 
 
