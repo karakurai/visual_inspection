@@ -491,7 +491,7 @@ class MainImageView(MDFloatLayout):
                 ]["main_result_error"]
                 self.screen.ids["result_" + str(index)].md_bg_color = "black"
             else:
-                if result_json["vit"]:
+                if result_json.get("vit") is not None:
                     self.screen.ids["result_" + str(index)].text = result_json["result"]
                     self.screen.ids["result_" + str(index)].md_bg_color = "green"
                 else:
@@ -531,7 +531,7 @@ class MainImageView(MDFloatLayout):
                 self.screen.ids["save_" + str(index)].opacity = 1
                 self.screen.ids["save_" + str(index)].disabled = False
                 if result_json is not None:
-                    if result_json["vit"]:
+                    if result_json.get("vit") is not None:
                         if not os.path.exists(result_vit_csv_path):
                             row = ["image_name", "result", "time", "score", "class"]
                             for cotegory in result_json["category_list"]:
